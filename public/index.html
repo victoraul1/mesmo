@@ -4,24 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Pública</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
-    <div>
-        <img src="images/banner.png" alt="Banner">
-    </div>
-    <div>
-        <video src="video.mp4" controls></video>
-    </div>
-    <div>
-        <p id="copy-text">La vida loca</p>
-    </div>
-    <div>
-        <img src="images/copy1.png" alt="Copy 1">
-        <img src="images/copy2.png" alt="Copy 2">
-        <img src="images/copy3.png" alt="Copy 3">
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+    <header>
+        <h1>Página Pública</h1>
+    </header>
+    <main>
+        <section>
+            <img src="/public/images/banner.png" alt="Banner" class="banner">
+            <div id="copy"></div>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <img src="/public/images/copy1.png" alt="Copy 1">
+                    <p>Descripción 1</p>
+                </div>
+                <div class="grid-item">
+                    <img src="/public/images/copy2.png" alt="Copy 2">
+                    <p>Descripción 2</p>
+                </div>
+                <div class="grid-item">
+                    <img src="/public/images/copy3.png" alt="Copy 3">
+                    <p>Descripción 3</p>
+                </div>
+                <div class="grid-item">
+                    <img src="/public/images/copy1.png" alt="Copy 4">
+                    <p>Descripción 4</p>
+                </div>
+                <div class="grid-item">
+                    <img src="/public/images/copy2.png" alt="Copy 5">
+                    <p>Descripción 5</p>
+                </div>
+                <div class="grid-item">
+                    <img src="/public/images/copy3.png" alt="Copy 6">
+                    <p>Descripción 6</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="/public/script.js"></script>
 </body>
 </html>

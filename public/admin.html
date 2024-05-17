@@ -4,18 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Página Demo</title>
+    <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
-    <div>
-        <input type="text" id="banner-url" placeholder="Banner URL" value="images/banner.png">
-        <input type="text" id="video-url" placeholder="Video URL" value="video.mp4">
-        <textarea id="copy-text">La vida loca</textarea>
-        <input type="text" id="copy1-url" placeholder="Copy 1 URL" value="images/copy1.png">
-        <input type="text" id="copy2-url" placeholder="Copy 2 URL" value="images/copy2.png">
-        <input type="text" id="copy3-url" placeholder="Copy 3 URL" value="images/copy3.png">
-        <button id="save-btn">Guardar Cambios</button>
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+    <header>
+        <h1>Admin Página Demo</h1>
+    </header>
+    <main>
+        <form id="adminForm">
+            <input type="text" id="banner" value="/public/images/banner.png">
+            <textarea id="copy">This is a placeholder for copy....</textarea>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <input type="text" id="copy1" value="/public/images/copy1.png">
+                    <textarea id="desc1">Descripción 1</textarea>
+                </div>
+                <div class="grid-item">
+                    <input type="text" id="copy2" value="/public/images/copy2.png">
+                    <textarea id="desc2">Descripción 2</textarea>
+                </div>
+                <div class="grid-item">
+                    <input type="text" id="copy3" value="/public/images/copy3.png">
+                    <textarea id="desc3">Descripción 3</textarea>
+                </div>
+                <div class="grid-item">
+                    <input type="text" id="copy4" value="/public/images/copy1.png">
+                    <textarea id="desc4">Descripción 4</textarea>
+                </div>
+                <div class="grid-item">
+                    <input type="text" id="copy5" value="/public/images/copy2.png">
+                    <textarea id="desc5">Descripción 5</textarea>
+                </div>
+                <div class="grid-item">
+                    <input type="text" id="copy6" value="/public/images/copy3.png">
+                    <textarea id="desc6">Descripción 6</textarea>
+                </div>
+            </div>
+            <button type="button" onclick="saveChanges()">Guardar Cambios</button>
+        </form>
+    </main>
+    <script src="/public/script.js"></script>
 </body>
 </html>
