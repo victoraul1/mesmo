@@ -2,31 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Demo</title>
-    <link href="styles.css" rel="stylesheet">
+    <title>Página Pública</title>
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const socket = io();
+
+            const bannerImage = document.querySelector('#banner');
+            const videoElement = document.querySelector('#video');
+            const copyText = document.querySelector('#copy');
+            const copy1Image = document.querySelector('#copy1');
+            const copy2Image = document.querySelector('#copy2');
+            const copy3Image = document.querySelector('#copy3');
+
+            socket.on('contentUpdated', (data) => {
+                bannerImage.src = data.banner;
+                videoElement.src = data.video;
+                copyText.textContent = data.copy;
+                copy1Image.src = data.copy1;
+                copy2Image.src = data.copy2;
+                copy3Image.src = data.copy3;
+            });
+        });
+    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="banner">
-            <img id="bannerImg" class="img-fluid" src="images/banner.jpg" alt="Banner">
-        </div>
-        <div class="video">
-            <video id="video" class="w-100" controls>
-                <source src="video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div class="placeholder">
-            <p id="placeholderText">This is a placeholder for copy.</p>
-        </div>
-        <div class="copy-images">
-            <img id="copyImg1" class="img-fluid" src="images/copy1.jpg" alt="Copy 1">
-            <img id="copyImg2" class="img-fluid" src="images/copy2.jpg" alt="Copy 2">
-            <img id="copyImg3" class="img-fluid" src="images/copy3.jpg" alt="Copy 3">
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <h1>Página Pública</h1>
+    <img id="banner" src="images/banner.png" alt="Banner">
+    <video id="video" controls>
+        <source src="video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <p id="copy">This is a placeholder for copy....</p>
+    <img id="copy1" src="images/copy1.png" alt="Copy 1">
+    <img id="copy2" src="images/copy2.png" alt="Copy 2">
+    <img id="copy3" src="images/copy3.png" alt="Copy 3">
 </body>
 </html>
