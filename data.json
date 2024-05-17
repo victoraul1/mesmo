@@ -1,0 +1,10 @@
+{
+  "banner": "public/images/banner.png",
+  "video": "video.mp4",
+  "copy1": "public/images/copy1.png",
+  "copy2": "public/images/copy2.png",
+  "copy3": "public/images/copy3.png",
+  "description1": "Descripción 1",
+  "description2": "Descripción 2",
+  "description3": "Descripción 3"
+}

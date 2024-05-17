@@ -10,24 +10,34 @@ const io = socketIo(server);
 
 const dataFilePath = path.join(__dirname, 'data.json');
 
-// Servir archivos estáticos desde la carpeta 'public'
+// Middleware to serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Leer datos del archivo JSON al iniciar el servidor
+// Load initial content data from data.json
 let contentData = JSON.parse(fs.readFileSync(dataFilePath, 'utf8'));
 
-// Enviar datos iniciales a los clientes al conectarse
+// Handle socket connections
 io.on('connection', (socket) => {
-  socket.emit('contentUpdate', contentData);
+    console.log('New client connected');
+    
+    // Send the initial content data to the newly connected client
+    socket.emit('contentUpdate', contentData);
+    
+    // Handle 'save' event from admin page to update content data
+    socket.on('save', (data) => {
+        contentData = data;
+        // Save updated content data to data.json
+        fs.writeFileSync(dataFilePath, JSON.stringify(contentData, null, 2));
+        // Broadcast updated content data to all connected clients
+        io.sockets.emit('contentUpdate', contentData);
+    });
 
-  // Guardar cambios y enviar actualización a todos los clientes
-  socket.on('save', (data) => {
-    contentData = data;
-    fs.writeFileSync(dataFilePath, JSON.stringify(contentData, null, 2), 'utf8');
-    io.emit('contentUpdate', contentData);
-  });
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
 });
 
+// Start the server
 server.listen(3000, () => {
-  console.log('Server is running on port 3000');
+    console.log('Server is running on port 3000');
 });

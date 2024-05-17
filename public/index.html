@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Pública</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Página Pública</h1>
-    <img id="banner" src="placeholder.png" alt="Banner" style="width: 100%;">
-    <video id="video" controls style="width: 100%;">
+    <img id="banner" src="public/images/banner.png" alt="Banner" width="1200" height="400">
+    <video id="video" width="320" height="240" controls>
         <source src="video.mp4" type="video/mp4">
     </video>
     <div class="grid-container">
         <div class="grid-item">
-            <img id="copy1" src="placeholder.png" alt="Copy 1">
+            <img id="copy1" src="public/images/copy1.png" alt="Copy 1" width="300" height="300">
             <p id="description1">Descripción 1</p>
         </div>
         <div class="grid-item">
-            <img id="copy2" src="placeholder.png" alt="Copy 2">
+            <img id="copy2" src="public/images/copy2.png" alt="Copy 2" width="300" height="300">
             <p id="description2">Descripción 2</p>
         </div>
         <div class="grid-item">
-            <img id="copy3" src="placeholder.png" alt="Copy 3">
+            <img id="copy3" src="public/images/copy3.png" alt="Copy 3" width="300" height="300">
             <p id="description3">Descripción 3</p>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
