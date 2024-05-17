@@ -1,42 +1,21 @@
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
 const path = require('path');
-
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+const PORT = 3000;
 
-let pageContent = {
-    bannerImg: 'images/banner.jpg',
-    videoSrc: 'video.mp4',
-    placeholderText: 'This is a placeholder for copy.',
-    copyImg1: 'images/copy1.jpg',
-    copyImg2: 'images/copy2.jpg',
-    copyImg3: 'images/copy3.jpg'
-};
-
+// Configura la carpeta estática
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
 
-app.get('/get-page-content', (req, res) => {
-    res.json(pageContent);
+// Ruta para servir index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.post('/update-page', (req, res) => {
-    pageContent = { ...pageContent, ...req.body };
-    io.emit('pageUpdate', pageContent);
-    res.json({ success: true });
+// Ruta para servir admin.html
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-io.on('connection', (socket) => {
-    console.log('A user connected');
-    socket.emit('pageUpdate', pageContent);
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
-});
-
-server.listen(3000, () => {
-    console.log('Server running on port 3000');
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
