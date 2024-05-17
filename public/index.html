@@ -3,45 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Página Pública</title>
-    <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Página Pública</h1>
-    </header>
-    <main>
-        <section>
-            <img src="/public/images/banner.png" alt="Banner" class="banner">
-            <div id="copy"></div>
-            <div class="grid-container">
-                <div class="grid-item">
-                    <img src="/public/images/copy1.png" alt="Copy 1">
-                    <p>Descripción 1</p>
-                </div>
-                <div class="grid-item">
-                    <img src="/public/images/copy2.png" alt="Copy 2">
-                    <p>Descripción 2</p>
-                </div>
-                <div class="grid-item">
-                    <img src="/public/images/copy3.png" alt="Copy 3">
-                    <p>Descripción 3</p>
-                </div>
-                <div class="grid-item">
-                    <img src="/public/images/copy1.png" alt="Copy 4">
-                    <p>Descripción 4</p>
-                </div>
-                <div class="grid-item">
-                    <img src="/public/images/copy2.png" alt="Copy 5">
-                    <p>Descripción 5</p>
-                </div>
-                <div class="grid-item">
-                    <img src="/public/images/copy3.png" alt="Copy 6">
-                    <p>Descripción 6</p>
-                </div>
-            </div>
-        </section>
-    </main>
-    <script src="/public/script.js"></script>
+    <h1>Página Pública</h1>
+    <div class="grid-container">
+        <div class="grid-item">
+            <img id="banner" src="images/banner.png" alt="Banner">
+        </div>
+        <div class="grid-item">
+            <video id="video" width="300" controls>
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="grid-item">
+            <img id="copy1" src="images/copy1.png" alt="Copy 1">
+            <p id="desc1">Descripción 1</p>
+        </div>
+        <div class="grid-item">
+            <img id="copy2" src="images/copy2.png" alt="Copy 2">
+            <p id="desc2">Descripción 2</p>
+        </div>
+        <div class="grid-item">
+            <img id="copy3" src="images/copy3.png" alt="Copy 3">
+            <p id="desc3">Descripción 3</p>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('contentUpdated', (data) => {
+            document.getElementById('banner').src = data.banner;
+            document.getElementById('video').src = data.video;
+            document.getElementById('copy1').src = data.copy1;
+            document.getElementById('desc1').innerText = data.desc1;
+            document.getElementById('copy2').src = data.copy2;
+            document.getElementById('desc2').innerText = data.desc2;
+            document.getElementById('copy3').src = data.copy3;
+            document.getElementById('desc3').innerText = data.desc3;
+        });
+    </script>
 </body>
 </html>

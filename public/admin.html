@@ -3,46 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Admin Página Demo</title>
-    <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Admin Página Demo</h1>
-    </header>
-    <main>
-        <form id="adminForm">
-            <input type="text" id="banner" value="/public/images/banner.png">
-            <textarea id="copy">This is a placeholder for copy....</textarea>
-            <div class="grid-container">
-                <div class="grid-item">
-                    <input type="text" id="copy1" value="/public/images/copy1.png">
-                    <textarea id="desc1">Descripción 1</textarea>
-                </div>
-                <div class="grid-item">
-                    <input type="text" id="copy2" value="/public/images/copy2.png">
-                    <textarea id="desc2">Descripción 2</textarea>
-                </div>
-                <div class="grid-item">
-                    <input type="text" id="copy3" value="/public/images/copy3.png">
-                    <textarea id="desc3">Descripción 3</textarea>
-                </div>
-                <div class="grid-item">
-                    <input type="text" id="copy4" value="/public/images/copy1.png">
-                    <textarea id="desc4">Descripción 4</textarea>
-                </div>
-                <div class="grid-item">
-                    <input type="text" id="copy5" value="/public/images/copy2.png">
-                    <textarea id="desc5">Descripción 5</textarea>
-                </div>
-                <div class="grid-item">
-                    <input type="text" id="copy6" value="/public/images/copy3.png">
-                    <textarea id="desc6">Descripción 6</textarea>
-                </div>
-            </div>
-            <button type="button" onclick="saveChanges()">Guardar Cambios</button>
-        </form>
-    </main>
-    <script src="/public/script.js"></script>
+    <h1>Admin Página Demo</h1>
+    <form id="adminForm">
+        <input type="text" id="banner" placeholder="Banner URL" value="public/images/banner.png"><br>
+        <input type="text" id="video" placeholder="Video URL" value="video.mp4"><br>
+        <textarea id="copy" placeholder="Copy text">This is a placeholder for copy....</textarea><br>
+        <input type="text" id="copy1" placeholder="Copy 1 URL" value="public/images/copy1.png">
+        <input type="text" id="desc1" placeholder="Descripción 1" value="Descripción 123"><br>
+        <input type="text" id="copy2" placeholder="Copy 2 URL" value="public/images/copy2.png">
+        <input type="text" id="desc2" placeholder="Descripción 2" value="Descripción 5f"><br>
+        <input type="text" id="copy3" placeholder="Copy 3 URL" value="public/images/copy3.png">
+        <input type="text" id="desc3" placeholder="Descripción 3" value="Descripción 3ee"><br>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const adminForm = document.getElementById('adminForm');
+
+        adminForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const data = {
+                banner: document.getElementById('banner').value,
+                video: document.getElementById('video').value,
+                copy: document.getElementById('copy').value,
+                copy1: document.getElementById('copy1').value,
+                desc1: document.getElementById('desc1').value,
+                copy2: document.getElementById('copy2').value,
+                desc2: document.getElementById('desc2').value,
+                copy3: document.getElementById('copy3').value,
+                desc3: document.getElementById('desc3').value
+            };
+            socket.emit('updateContent', data);
+        });
+    </script>
 </body>
 </html>
