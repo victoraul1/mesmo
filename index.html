@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Demo</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <img id="bannerImg" class="img-fluid" src="images/banner.jpg" alt="Banner">
+        </div>
+        <div class="video">
+            <video id="video" class="w-100" controls>
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="placeholder">
+            <p id="placeholderText">This is a placeholder for copy.</p>
+        </div>
+        <div class="copy-images">
+            <img id="copyImg1" class="img-fluid" src="images/copy1.jpg" alt="Copy 1">
+            <img id="copyImg2" class="img-fluid" src="images/copy2.jpg" alt="Copy 2">
+            <img id="copyImg3" class="img-fluid" src="images/copy3.jpg" alt="Copy 3">
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

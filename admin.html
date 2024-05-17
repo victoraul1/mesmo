@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Página Demo</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <input type="text" id="bannerImgInput" class="form-control" placeholder="Banner Image URL" value="images/banner.jpg">
+        </div>
+        <div class="video">
+            <input type="text" id="videoSrcInput" class="form-control" placeholder="Video URL" value="video.mp4">
+        </div>
+        <div class="placeholder">
+            <textarea id="placeholderTextInput" class="form-control" rows="3">This is a placeholder for copy.</textarea>
+        </div>
+        <div class="copy-images">
+            <input type="text" id="copyImg1Input" class="form-control" placeholder="Copy Image 1 URL" value="images/copy1.jpg">
+            <input type="text" id="copyImg2Input" class="form-control" placeholder="Copy Image 2 URL" value="images/copy2.jpg">
+            <input type="text" id="copyImg3Input" class="form-control" placeholder="Copy Image 3 URL" value="images/copy3.jpg">
+        </div>
+        <button id="saveBtn" class="btn btn-primary">Guardar Cambios</button>
+    </div>
+    <script>
+        const socket = io();
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const bannerImg = document.getElementById('bannerImgInput').value;
+            const videoSrc = document.getElementById('videoSrcInput').value;
+            const placeholderText = document.getElementById('placeholderTextInput').value;
+            const copyImg1 = document.getElementById('copyImg1Input').value;
+            const copyImg2 = document.getElementById('copyImg2Input').value;
+            const copyImg3 = document.getElementById('copyImg3Input').value;
+
+            fetch('/update-page', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bannerImg, videoSrc, placeholderText, copyImg1, copyImg2, copyImg3 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Página actualizada con éxito');
+                } else {
+                    alert('Error al actualizar la página');
+                }
+            });
+        });
+
+        socket.on('pageUpdate', data => {
+            document.getElementById('bannerImgInput').value = data.bannerImg;
+            document.getElementById('videoSrcInput').value = data.videoSrc;
+            document.getElementById('placeholderTextInput').value = data.placeholderText;
+            document.getElementById('copyImg1Input').value = data.copyImg1;
+            document.getElementById('copyImg2Input').value = data.copyImg2;
+            document.getElementById('copyImg3Input').value = data.copyImg3;
+        });
+
+        fetch('/get-page-content')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('bannerImgInput').value = data.bannerImg;
+                document.getElementById('videoSrcInput').value = data.videoSrc;
+                document.getElementById('placeholderTextInput').value = data.placeholderText;
+                document.getElementById('copyImg1Input').value = data.copyImg1;
+                document.getElementById('copyImg2Input').value = data.copyImg2;
+                document.getElementById('copyImg3Input').value = data.copyImg3;
+            });
+    </script>
+</body>
+</html>
