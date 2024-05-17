@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Página Demo</title>
+    <title>Administración del Menú</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Admin Página Demo</h1>
-    <div>
-        <input id="bannerInput" type="text" placeholder="Banner URL">
-        <input id="videoInput" type="text" placeholder="Video URL">
-        <textarea id="descriptionInput" placeholder="Descripción"></textarea>
-        <input id="copy1Input" type="text" placeholder="Copy 1 URL">
-        <input id="description1Input" type="text" placeholder="Descripción 1">
-        <input id="copy2Input" type="text" placeholder="Copy 2 URL">
-        <input id="description2Input" type="text" placeholder="Descripción 2">
-        <input id="copy3Input" type="text" placeholder="Copy 3 URL">
-        <input id="description3Input" type="text" placeholder="Descripción 3">
-        <button id="saveButton">Guardar Cambios</button>
-    </div>
+    <h1>Administración del Menú</h1>
+    <form id="menuForm">
+        <!-- El formulario para editar el menú se generará dinámicamente aquí -->
+    </form>
+    <button type="button" id="saveButton">Guardar Cambios</button>
     <script src="/socket.io/socket.io.js"></script>
     <script src="admin-script.js"></script>
 </body>

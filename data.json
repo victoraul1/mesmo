@@ -1,10 +1,24 @@
 {
-  "banner": "public/images/banner.png",
-  "video": "video.mp4",
-  "copy1": "public/images/copy1.png",
-  "copy2": "public/images/copy2.png",
-  "copy3": "public/images/copy3.png",
-  "description1": "Descripción 1",
-  "description2": "Descripción 2",
-  "description3": "Descripción 3"
+    "menu": [
+        {
+            "title": "DESAYUNOS",
+            "items": [
+                { "name": "Tamal (pollo)", "price": "7.50" },
+                { "name": "Humita", "price": "8.00" },
+                { "name": "Papa Rellena", "price": "8.00" }
+            ]
+        },
+        {
+            "title": "SÁNDWICHES",
+            "items": [
+                { "name": "Pan con jamón", "price": "14.50" },
+                { "name": "Pan con pavo", "price": "13.50" },
+                { "name": "Pan con chicharrón", "price": "15.00" },
+                { "name": "Pan con pollo", "price": "11.50" },
+                { "name": "Pan con pollo y queso", "price": "13.00" },
+                { "name": "Pan con queso", "price": "6.50" }
+            ]
+        }
+        // Agrega el resto de las secciones y sus items de manera similar
+    ]
 }

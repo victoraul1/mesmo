@@ -1,37 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Pública</title>
+    <title>Menú del Restaurante</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Página Pública</h1>
-    <div class="grid-container">
-        <div class="grid-item">
-            <img id="banner" src="/public/images/banner.png" alt="Banner">
-        </div>
-        <div class="grid-item">
-            <video id="video" controls>
-                <source src="video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div class="grid-item" id="copy1-container">
-            <img id="copy1" src="/public/images/copy1.png" alt="Copy 1">
-            <p id="description1">Descripción 1</p>
-        </div>
-        <div class="grid-item" id="copy2-container">
-            <img id="copy2" src="/public/images/copy2.png" alt="Copy 2">
-            <p id="description2">Descripción 2</p>
-        </div>
-        <div class="grid-item" id="copy3-container">
-            <img id="copy3" src="/public/images/copy3.png" alt="Copy 3">
-            <p id="description3">Descripción 3</p>
-        </div>
+    <h1>Menú del Restaurante</h1>
+    <div id="menu-container">
+        <!-- El menú se generará dinámicamente aquí -->
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

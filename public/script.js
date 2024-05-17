@@ -1,12 +1,17 @@
 const socket = io();
 
 socket.on('contentUpdate', (data) => {
-    document.getElementById('banner').src = data.banner;
-    document.getElementById('video').src = data.video;
-    document.getElementById('copy1').src = data.copy1;
-    document.getElementById('copy2').src = data.copy2;
-    document.getElementById('copy3').src = data.copy3;
-    document.getElementById('description1').innerText = data.description1;
-    document.getElementById('description2').innerText = data.description2;
-    document.getElementById('description3').innerText = data.description3;
+    const menuContainer = document.getElementById('menu-container');
+    menuContainer.innerHTML = '';
+
+    data.menu.forEach(section => {
+        const sectionElement = document.createElement('div');
+        sectionElement.innerHTML = `<h2>${section.title}</h2>`;
+        section.items.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.innerHTML = `<p>${item.name} - S/.${item.price}</p>`;
+            sectionElement.appendChild(itemElement);
+        });
+        menuContainer.appendChild(sectionElement);
+    });
 });
