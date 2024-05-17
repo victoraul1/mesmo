@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrar Menú del Restaurante</title>
+    <title>Actualizar Menú</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Administrar Menú del Restaurante</h1>
-    <form id="menu-form">
-        <!-- Los campos de edición se generarán dinámicamente aquí -->
-    </form>
-    <button id="save-button">Guardar Cambios</button>
+    <div class="container">
+        <h1>Actualizar Menú</h1>
+        <button id="addCategoryBtn">Agregar Categoría</button>
+        <div id="menu-form">
+            <!-- Aquí se agregarán las categorías y platos dinámicamente -->
+        </div>
+        <button id="save-button">Guardar Cambios</button>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="admin-script.js"></script>
 </body>

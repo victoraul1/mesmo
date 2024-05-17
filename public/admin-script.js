@@ -35,8 +35,36 @@ socket.on('contentUpdate', (data) => {
 
             itemElement.appendChild(itemNameElement);
             itemElement.appendChild(itemPriceElement);
+
+            // Agregar botón para eliminar plato
+            const deleteDishBtn = document.createElement('button');
+            deleteDishBtn.classList.add('delete', 'deleteDishBtn');
+            deleteDishBtn.textContent = 'Eliminar Plato';
+            deleteDishBtn.addEventListener('click', () => {
+                itemElement.remove();
+            });
+            itemElement.appendChild(deleteDishBtn);
+
             sectionElement.appendChild(itemElement);
         });
+
+        // Agregar botón para agregar plato
+        const addDishBtn = document.createElement('button');
+        addDishBtn.classList.add('addDishBtn');
+        addDishBtn.textContent = 'Agregar Plato';
+        addDishBtn.addEventListener('click', () => {
+            addDish(sectionElement);
+        });
+        sectionElement.appendChild(addDishBtn);
+
+        // Agregar botón para eliminar categoría
+        const deleteCategoryBtn = document.createElement('button');
+        deleteCategoryBtn.classList.add('delete', 'deleteCategoryBtn');
+        deleteCategoryBtn.textContent = 'Eliminar Categoría';
+        deleteCategoryBtn.addEventListener('click', () => {
+            sectionElement.remove();
+        });
+        sectionElement.appendChild(deleteCategoryBtn);
 
         menuForm.appendChild(sectionElement);
     });
@@ -60,10 +88,12 @@ saveButton.addEventListener('click', () => {
             const itemNameElement = itemElement.querySelector('input[data-type="name"]');
             const itemPriceElement = itemElement.querySelector('input[data-type="price"]');
 
-            items.push({
-                nombre: itemNameElement.value,
-                precio: itemPriceElement.value
-            });
+            if (itemNameElement && itemPriceElement) {
+                items.push({
+                    nombre: itemNameElement.value,
+                    precio: itemPriceElement.value
+                });
+            }
         });
 
         updatedMenu.push({
@@ -74,3 +104,68 @@ saveButton.addEventListener('click', () => {
 
     socket.emit('save', { menu: updatedMenu });
 });
+
+// Funcionalidad para agregar categoría y plato
+document.getElementById('addCategoryBtn').addEventListener('click', () => {
+    addCategory();
+});
+
+function addCategory() {
+    const sectionElement = document.createElement('div');
+    sectionElement.classList.add('menu-section');
+
+    const categoryElement = document.createElement('input');
+    categoryElement.type = 'text';
+    categoryElement.placeholder = 'Nombre de la Categoría';
+    categoryElement.dataset.type = 'category';
+    sectionElement.appendChild(categoryElement);
+
+    // Agregar botón para agregar plato
+    const addDishBtn = document.createElement('button');
+    addDishBtn.classList.add('addDishBtn');
+    addDishBtn.textContent = 'Agregar Plato';
+    addDishBtn.addEventListener('click', () => {
+        addDish(sectionElement);
+    });
+    sectionElement.appendChild(addDishBtn);
+
+    // Agregar botón para eliminar categoría
+    const deleteCategoryBtn = document.createElement('button');
+    deleteCategoryBtn.classList.add('delete', 'deleteCategoryBtn');
+    deleteCategoryBtn.textContent = 'Eliminar Categoría';
+    deleteCategoryBtn.addEventListener('click', () => {
+        sectionElement.remove();
+    });
+    sectionElement.appendChild(deleteCategoryBtn);
+
+    document.getElementById('menu-form').appendChild(sectionElement);
+}
+
+function addDish(sectionElement) {
+    const itemElement = document.createElement('div');
+
+    const itemNameElement = document.createElement('input');
+    itemNameElement.type = 'text';
+    itemNameElement.placeholder = 'Nombre del Plato';
+    itemNameElement.dataset.type = 'name';
+
+    const itemPriceElement = document.createElement('input');
+    itemPriceElement.type = 'text';
+    itemPriceElement.placeholder = 'Precio del Plato';
+    itemPriceElement.dataset.type = 'price';
+
+   
+    itemElement.appendChild(itemNameElement);
+    itemElement.appendChild(itemPriceElement);
+
+    // Agregar botón para eliminar plato
+    const deleteDishBtn = document.createElement('button');
+    deleteDishBtn.classList.add('delete', 'deleteDishBtn');
+    deleteDishBtn.textContent = 'Eliminar Plato';
+    deleteDishBtn.addEventListener('click', () => {
+        itemElement.remove();
+    });
+    itemElement.appendChild(deleteDishBtn);
+
+    sectionElement.appendChild(itemElement);
+}
