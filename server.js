@@ -1,41 +1,65 @@
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.use(express.static('public'));
+const PORT = process.env.PORT || 3000;
 
-// Rutas para servir el index.html y admin.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+const DATA_FILE = path.join(__dirname, 'data.json');
+
+// Leer datos desde el archivo JSON
+const readData = () => {
+    if (fs.existsSync(DATA_FILE)) {
+        const data = fs.readFileSync(DATA_FILE);
+        return JSON.parse(data);
+    }
+    return {
+        banner: '',
+        video: '',
+        copy1: '',
+        copy2: '',
+        copy3: '',
+        description1: '',
+        description2: '',
+        description3: ''
+    };
+};
+
+// Escribir datos en el archivo JSON
+const writeData = (data) => {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+};
+
+// Middleware para servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Endpoint para obtener los datos
+app.get('/data', (req, res) => {
+    res.json(readData());
 });
 
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-// Manejo de eventos de Socket.IO
 io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  socket.on('updateContent', (data) => {
-    // Guardar los datos en un archivo o en una base de datos
-    fs.writeFileSync(path.join(__dirname, 'public', 'data.json'), JSON.stringify(data));
+    console.log('New client connected');
     
-    // Emitir los datos actualizados a todos los clientes
-    io.emit('contentUpdated', data);
-  });
+    // Enviar datos actuales al cliente
+    socket.emit('update', readData());
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
+    // Manejar cambios desde el cliente
+    socket.on('save', (data) => {
+        writeData(data);
+        io.emit('update', data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
 });
 
-const port = process.env.PORT || 3000;
-server.listen(port, () => console.log(`Server running on port ${port}`));
-
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
