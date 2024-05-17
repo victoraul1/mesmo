@@ -13,7 +13,7 @@ const dataFilePath = path.join(__dirname, 'data.json');
 // Middleware para servir archivos estáticos desde el directorio "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Cargar datos iniciales desde data.json
+// Cargar datos iniciales de data.json
 let contentData = JSON.parse(fs.readFileSync(dataFilePath, 'utf8'));
 
 // Manejar conexiones de socket
@@ -23,11 +23,13 @@ io.on('connection', (socket) => {
     // Enviar los datos iniciales al cliente recién conectado
     socket.emit('contentUpdate', contentData);
 
-    // Manejar el evento 'save' desde la página de administración para actualizar los datos
+    // Manejar evento 'save' desde la página de administración para actualizar datos
     socket.on('save', (data) => {
         contentData = data;
-        // Guardar los datos actualizados en data.json
+
+        // Guardar datos actualizados en data.json
         fs.writeFileSync(dataFilePath, JSON.stringify(contentData, null, 2));
+
         // Transmitir los datos actualizados a todos los clientes conectados
         io.sockets.emit('contentUpdate', contentData);
     });
