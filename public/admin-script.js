@@ -31,9 +31,13 @@ socket.on('contentUpdate', (data) => {
             const itemDescElement = createInputElement(item.descripcion, 'text', sectionIndex, itemIndex, 'desc');
             const itemPriceElement = createInputElement(item.precio, 'text', sectionIndex, itemIndex, 'price');
 
-            itemElement.appendChild(itemNameElement);
+            const namePriceWrapper = document.createElement('div');
+            namePriceWrapper.classList.add('name-price-wrapper');
+            namePriceWrapper.appendChild(itemNameElement);
+            namePriceWrapper.appendChild(itemPriceElement);
+
+            itemElement.appendChild(namePriceWrapper);
             itemElement.appendChild(itemDescElement);
-            itemElement.appendChild(itemPriceElement);
 
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('delete');

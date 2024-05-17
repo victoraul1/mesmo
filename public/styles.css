@@ -41,14 +41,17 @@ h1 {
 }
 
 .menu-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 10px;
 }
 
-.menu-item input[type="text"] {
-    width: 30%;
+.name-price-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name-price-wrapper input[type="text"] {
+    width: 48%;
     margin-right: 10px;
 }
 
@@ -104,4 +107,15 @@ button.addDishBtn:hover {
 
 #save-button:hover {
     background-color: #e0a800;
+}
+
+/* Estilos específicos para el menú */
+.menu-item .name-price-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu-item .name-price-wrapper .price {
+    text-align: right;
+    width: 20%;
 }
