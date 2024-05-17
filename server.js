@@ -8,30 +8,83 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const dataFilePath = path.join(__dirname, 'data.json');
-
-// Middleware para servir archivos estáticos desde el directorio "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Cargar datos iniciales de data.json
-let contentData = JSON.parse(fs.readFileSync(dataFilePath, 'utf8'));
-
-// Manejar conexiones de socket
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    // Enviar los datos iniciales al cliente recién conectado
-    socket.emit('contentUpdate', contentData);
+    // Load data.json and send it to the client
+    fs.readFile('./data.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading data.json:', err);
+            return;
+        }
+        const menuData = JSON.parse(data);
+        socket.emit('contentUpdate', menuData);
+    });
 
-    // Manejar evento 'save' desde la página de administración para actualizar datos
-    socket.on('save', (data) => {
-        contentData = data;
+    socket.on('save', (updatedMenu) => {
+        fs.writeFile('./data.json', JSON.stringify(updatedMenu, null, 2), 'utf8', (err) => {
+            if (err) {
+                console.error('Error writing data.json:', err);
+                return;
+            }
+            console.log('Menu data updated successfully');
+        });
+    });
 
-        // Guardar datos actualizados en data.json
-        fs.writeFileSync(dataFilePath, JSON.stringify(contentData, null, 2));
+    socket.on('addCategory', (newCategory) => {
+        fs.readFile('./data.json', 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading data.json:', err);
+                return;
+            }
+            const menuData = JSON.parse(data);
+            menuData.menu.push(newCategory);
+            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
+                if (err) {
+                    console.error('Error writing data.json:', err);
+                    return;
+                }
+                io.emit('contentUpdate', menuData);
+            });
+        });
+    });
 
-        // Transmitir los datos actualizados a todos los clientes conectados
-        io.sockets.emit('contentUpdate', contentData);
+    socket.on('addItem', ({ sectionIndex, newItem }) => {
+        fs.readFile('./data.json', 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading data.json:', err);
+                return;
+            }
+            const menuData = JSON.parse(data);
+            menuData.menu[sectionIndex].items.push(newItem);
+            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
+                if (err) {
+                    console.error('Error writing data.json:', err);
+                    return;
+                }
+                io.emit('contentUpdate', menuData);
+            });
+        });
+    });
+
+    socket.on('deleteItem', ({ sectionIndex, itemIndex }) => {
+        fs.readFile('./data.json', 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading data.json:', err);
+                return;
+            }
+            const menuData = JSON.parse(data);
+            menuData.menu[sectionIndex].items.splice(itemIndex, 1);
+            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
+                if (err) {
+                    console.error('Error writing data.json:', err);
+                    return;
+                }
+                io.emit('contentUpdate', menuData);
+            });
+        });
     });
 
     socket.on('disconnect', () => {
@@ -39,7 +92,5 @@ io.on('connection', (socket) => {
     });
 });
 
-// Iniciar el servidor
-server.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
