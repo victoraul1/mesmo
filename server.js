@@ -13,6 +13,7 @@ const dataFilePath = path.join(__dirname, 'data.json');
 // Middleware to serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Load initial content data from data.json
 let contentData = JSON.parse(fs.readFileSync(dataFilePath, 'utf8'));
 
