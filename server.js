@@ -1,42 +1,61 @@
 const express = require('express');
-const path = require('path');
-const http = require('http');
-const socketIo = require('socket.io');
-
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
-
-let content = {
-    banner: 'images/banner.png',
-    video: 'video.mp4',
-    copy: 'This is a placeholder for copy....',
-    copy1: 'images/copy1.png',
-    copy2: 'images/copy2.png',
-    copy3: 'images/copy3.png'
-};
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+const fs = require('fs');
+const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    
-    socket.emit('contentUpdated', content);
-
-    socket.on('updateContent', (data) => {
-        content = data;
-        io.emit('contentUpdated', content);
-    });
-
-    socket.on('saveContent', (data) => {
-        content = data;
-        io.emit('contentUpdated', content);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+    socket.on('update content', (data) => {
+        fs.writeFile(path.join(__dirname, 'public', 'index.html'), generateHTML(data), (err) => {
+            if (err) throw err;
+            io.emit('content updated', data);
+        });
     });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+function generateHTML(data) {
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Página Pública</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div>
+            <img src="${data.bannerUrl}" alt="Banner">
+        </div>
+        <div>
+            <video src="${data.videoUrl}" controls></video>
+        </div>
+        <div>
+            <p id="copy-text">${data.copyText}</p>
+        </div>
+        <div>
+            <img src="${data.copy1Url}" alt="Copy 1">
+            <img src="${data.copy2Url}" alt="Copy 2">
+            <img src="${data.copy3Url}" alt="Copy 3">
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="script.js"></script>
+    </body>
+    </html>
+    `;
+}
+
+http.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
