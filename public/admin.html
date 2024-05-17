@@ -3,44 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Admin Página Demo</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <h1>Admin Página Demo</h1>
-    <form id="adminForm">
-        <input type="text" id="banner" placeholder="Banner URL" value="public/images/banner.png"><br>
-        <input type="text" id="video" placeholder="Video URL" value="video.mp4"><br>
-        <textarea id="copy" placeholder="Copy text">This is a placeholder for copy....</textarea><br>
-        <input type="text" id="copy1" placeholder="Copy 1 URL" value="public/images/copy1.png">
-        <input type="text" id="desc1" placeholder="Descripción 1" value="Descripción 123"><br>
-        <input type="text" id="copy2" placeholder="Copy 2 URL" value="public/images/copy2.png">
-        <input type="text" id="desc2" placeholder="Descripción 2" value="Descripción 5f"><br>
-        <input type="text" id="copy3" placeholder="Copy 3 URL" value="public/images/copy3.png">
-        <input type="text" id="desc3" placeholder="Descripción 3" value="Descripción 3ee"><br>
-        <button type="submit">Guardar Cambios</button>
-    </form>
-
+    <input id="bannerInput" type="text" placeholder="Banner URL">
+    <input id="videoInput" type="text" placeholder="Video URL">
+    <input id="copy1Input" type="text" placeholder="Copy 1 URL">
+    <input id="copy2Input" type="text" placeholder="Copy 2 URL">
+    <input id="copy3Input" type="text" placeholder="Copy 3 URL">
+    <input id="description1Input" type="text" placeholder="Descripción 1">
+    <input id="description2Input" type="text" placeholder="Descripción 2">
+    <input id="description3Input" type="text" placeholder="Descripción 3">
+    <button id="saveButton">Guardar Cambios</button>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        const adminForm = document.getElementById('adminForm');
-
-        adminForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const data = {
-                banner: document.getElementById('banner').value,
-                video: document.getElementById('video').value,
-                copy: document.getElementById('copy').value,
-                copy1: document.getElementById('copy1').value,
-                desc1: document.getElementById('desc1').value,
-                copy2: document.getElementById('copy2').value,
-                desc2: document.getElementById('desc2').value,
-                copy3: document.getElementById('copy3').value,
-                desc3: document.getElementById('desc3').value
-            };
-            socket.emit('updateContent', data);
-        });
-    </script>
+    <script src="/admin.js"></script>
 </body>
 </html>
