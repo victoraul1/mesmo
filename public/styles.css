@@ -32,12 +32,24 @@ h1 {
 }
 
 .menu-section input[type="text"] {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 3px;
     box-sizing: border-box;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.menu-item input[type="text"] {
+    width: 30%;
+    margin-right: 10px;
 }
 
 button {
