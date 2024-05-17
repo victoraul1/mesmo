@@ -2,42 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Página Demo</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const socket = io();
-
-            const bannerInput = document.querySelector('#banner');
-            const videoInput = document.querySelector('#video');
-            const copyInput = document.querySelector('#copy');
-            const copy1Input = document.querySelector('#copy1');
-            const copy2Input = document.querySelector('#copy2');
-            const copy3Input = document.querySelector('#copy3');
-            const saveButton = document.querySelector('#save');
-
-            saveButton.addEventListener('click', () => {
-                const content = {
-                    banner: bannerInput.value,
-                    video: videoInput.value,
-                    copy: copyInput.value,
-                    copy1: copy1Input.value,
-                    copy2: copy2Input.value,
-                    copy3: copy3Input.value
-                };
-                socket.emit('updateContent', content);
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Admin Página Demo</h1>
-    <input type="text" id="banner" placeholder="Banner Image URL" value="images/banner.png">
-    <input type="text" id="video" placeholder="Video URL" value="video.mp4">
-    <textarea id="copy">This is a placeholder for copy....</textarea>
-    <input type="text" id="copy1" placeholder="Copy 1 Image URL" value="images/copy1.png">
-    <input type="text" id="copy2" placeholder="Copy 2 Image URL" value="images/copy2.png">
-    <input type="text" id="copy3" placeholder="Copy 3 Image URL" value="images/copy3.png">
-    <button id="save">Guardar Cambios</button>
+    <header>
+        <h1>Admin Página Demo</h1>
+    </header>
+    <main>
+        <form>
+            <label for="banner">Banner:</label>
+            <input type="text" id="banner" value="images/banner.png" class="input">
+            <label for="video">Video:</label>
+            <input type="text" id="video" value="video.mp4" class="input">
+            <label for="copy">Texto:</label>
+            <textarea id="copy" class="textarea">This is a placeholder for copy....</textarea>
+            <label for="copy1">Imagen 1:</label>
+            <input type="text" id="copy1" value="images/copy1.png" class="input">
+            <label for="copy2">Imagen 2:</label>
+            <input type="text" id="copy2" value="images/copy2.png" class="input">
+            <label for="copy3">Imagen 3:</label>
+            <input type="text" id="copy3" value="images/copy3.png" class="input">
+            <button type="button" onclick="saveChanges()">Guardar Cambios</button>
+        </form>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

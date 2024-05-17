@@ -6,34 +6,37 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
-const PORT = 3000;
 
-// Configura la carpeta estática
+let content = {
+    banner: 'images/banner.png',
+    video: 'video.mp4',
+    copy: 'This is a placeholder for copy....',
+    copy1: 'images/copy1.png',
+    copy2: 'images/copy2.png',
+    copy3: 'images/copy3.png'
+};
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta para servir index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Ruta para servir admin.html
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
 io.on('connection', (socket) => {
-    console.log('New client connected');
+    console.log('a user connected');
+    
+    socket.emit('contentUpdated', content);
 
     socket.on('updateContent', (data) => {
-        // Envía la actualización a todos los clientes, incluida la página pública
-        io.emit('contentUpdated', data);
+        content = data;
+        io.emit('contentUpdated', content);
+    });
+
+    socket.on('saveContent', (data) => {
+        content = data;
+        io.emit('contentUpdated', content);
     });
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
+        console.log('user disconnected');
     });
 });
 
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
