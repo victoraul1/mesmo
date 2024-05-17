@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin - Menú del Restaurante</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="admin-script.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Admin Panel</h1>
-        <div id="menu-form"></div>
-        <button id="addCategoryBtn">Agregar Categoría</button>
-        <button id="save-button">Guardar Cambios</button>
-    </div>
+    <div id="menu-form"></div>
+    <button id="add-category">Agregar Categoría</button>
+    <button id="save-button">Guardar Cambios</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="admin-script.js"></script>
 </body>
 </html>

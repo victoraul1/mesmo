@@ -1,89 +1,66 @@
 const socket = io();
 
-// Función para crear un elemento de entrada con el valor y atributos especificados
-function createInputElement(value, type, sectionIndex, itemIndex, dataType) {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = value;
-    input.dataset.sectionIndex = sectionIndex;
-    input.dataset.itemIndex = itemIndex;
-    input.dataset.type = dataType;
-    return input;
-}
-
-// Generar el formulario de edición del menú
 socket.on('contentUpdate', (data) => {
     const menuForm = document.getElementById('menu-form');
-    menuForm.innerHTML = ''; // Limpiar contenido anterior
+    if (!menuForm) return;
+    menuForm.innerHTML = ''; // Clear previous content
 
     data.menu.forEach((section, sectionIndex) => {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
-        const categoryElement = createInputElement(section.categoria, 'text', sectionIndex, null, 'category');
+        const categoryElement = document.createElement('input');
+        categoryElement.type = 'text';
+        categoryElement.value = section.categoria;
+        categoryElement.dataset.index = sectionIndex;
+        categoryElement.dataset.type = 'category';
         sectionElement.appendChild(categoryElement);
 
         section.items.forEach((item, itemIndex) => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('menu-item');
 
-            const itemNameElement = createInputElement(item.nombre, 'text', sectionIndex, itemIndex, 'name');
-            const itemDescElement = createInputElement(item.descripcion, 'text', sectionIndex, itemIndex, 'desc');
-            const itemPriceElement = createInputElement(item.precio, 'text', sectionIndex, itemIndex, 'price');
+            const itemNameElement = document.createElement('input');
+            itemNameElement.type = 'text';
+            itemNameElement.value = item.nombre;
+            itemNameElement.dataset.sectionIndex = sectionIndex;
+            itemNameElement.dataset.itemIndex = itemIndex;
+            itemNameElement.dataset.type = 'name';
 
-            const namePriceWrapper = document.createElement('div');
-            namePriceWrapper.classList.add('name-price-wrapper');
-            namePriceWrapper.appendChild(itemNameElement);
-            namePriceWrapper.appendChild(itemPriceElement);
+            const itemPriceElement = document.createElement('input');
+            itemPriceElement.type = 'text';
+            itemPriceElement.value = item.precio;
+            itemPriceElement.dataset.sectionIndex = sectionIndex;
+            itemPriceElement.dataset.itemIndex = itemIndex;
+            itemPriceElement.dataset.type = 'price';
 
-            itemElement.appendChild(namePriceWrapper);
-            itemElement.appendChild(itemDescElement);
-
-            const deleteButton = document.createElement('button');
-            deleteButton.classList.add('delete');
-            deleteButton.textContent = 'Eliminar';
-            deleteButton.onclick = () => deleteItem(sectionIndex, itemIndex);
-            itemElement.appendChild(deleteButton);
-
+            itemElement.appendChild(itemNameElement);
+            itemElement.appendChild(itemPriceElement);
             sectionElement.appendChild(itemElement);
         });
-
-        const addItemButton = document.createElement('button');
-        addItemButton.classList.add('addDishBtn');
-        addItemButton.textContent = 'Agregar Plato';
-        addItemButton.onclick = () => addItem(sectionIndex);
-        sectionElement.appendChild(addItemButton);
 
         menuForm.appendChild(sectionElement);
     });
 });
 
-// Agregar nueva categoría
-document.getElementById('addCategoryBtn').addEventListener('click', () => {
-    const newSection = {
-        categoria: 'Nueva Categoría',
-        items: []
-    };
-    socket.emit('addCategory', newSection);
+const addCategoryButton = document.getElementById('add-category');
+addCategoryButton.addEventListener('click', () => {
+    const menuForm = document.getElementById('menu-form');
+    const sectionElement = document.createElement('div');
+    sectionElement.classList.add('menu-section');
+
+    const categoryElement = document.createElement('input');
+    categoryElement.type = 'text';
+    categoryElement.placeholder = 'Nueva Categoría';
+    categoryElement.dataset.type = 'category';
+    sectionElement.appendChild(categoryElement);
+
+    menuForm.appendChild(sectionElement);
 });
 
-// Agregar nuevo plato
-function addItem(sectionIndex) {
-    const newItem = {
-        nombre: 'Nuevo Plato',
-        descripcion: 'Descripción',
-        precio: '0.00'
-    };
-    socket.emit('addItem', { sectionIndex, newItem });
-}
-
-// Eliminar plato
-function deleteItem(sectionIndex, itemIndex) {
-    socket.emit('deleteItem', { sectionIndex, itemIndex });
-}
-
 // Guardar cambios desde el formulario de administración
-document.getElementById('save-button').addEventListener('click', () => {
+const saveButton = document.getElementById('save-button');
+saveButton.addEventListener('click', () => {
     const menuForm = document.getElementById('menu-form');
     const sections = menuForm.querySelectorAll('.menu-section');
     const updatedMenu = [];
@@ -97,12 +74,10 @@ document.getElementById('save-button').addEventListener('click', () => {
         const itemElements = sectionElement.querySelectorAll('.menu-item');
         itemElements.forEach(itemElement => {
             const itemNameElement = itemElement.querySelector('input[data-type="name"]');
-            const itemDescElement = itemElement.querySelector('input[data-type="desc"]');
             const itemPriceElement = itemElement.querySelector('input[data-type="price"]');
 
             items.push({
                 nombre: itemNameElement.value,
-                descripcion: itemDescElement.value,
                 precio: itemPriceElement.value
             });
         });
