@@ -1,24 +1,34 @@
 {
     "menu": [
         {
-            "title": "DESAYUNOS",
+            "categoria": "DESAYUNOS",
             "items": [
-                { "name": "Tamal (pollo)", "price": "7.50" },
-                { "name": "Humita", "price": "8.00" },
-                { "name": "Papa Rellena", "price": "8.00" }
+                {"nombre": "Tamal (pollo)", "precio": "S/.7.50"},
+                {"nombre": "Humita", "precio": "S/.8.00"},
+                {"nombre": "Papa Rellena", "precio": "S/.8.00"}
             ]
         },
         {
-            "title": "SÁNDWICHES",
+            "categoria": "SÁNDWICHES",
             "items": [
-                { "name": "Pan con jamón", "price": "14.50" },
-                { "name": "Pan con pavo", "price": "13.50" },
-                { "name": "Pan con chicharrón", "price": "15.00" },
-                { "name": "Pan con pollo", "price": "11.50" },
-                { "name": "Pan con pollo y queso", "price": "13.00" },
-                { "name": "Pan con queso", "price": "6.50" }
+                {"nombre": "Pan con jamón", "precio": "S/.14.50"},
+                {"nombre": "Pan con pavo", "precio": "S/.13.50"},
+                {"nombre": "Pan con chicharrón", "precio": "S/.15.00"},
+                {"nombre": "Pan con pollo", "precio": "S/.11.50"},
+                {"nombre": "Pan con pollo y queso", "precio": "S/.13.00"},
+                {"nombre": "Pan con queso", "precio": "S/.6.50"}
+            ]
+        },
+        {
+            "categoria": "ESPECIALIDAD DE LA CASA",
+            "items": [
+                {"nombre": "Frito (2 chuletas de cerdo)", "precio": "S/.27.50"},
+                {"nombre": "1/2 frito (1 chuleta de cerdo)", "precio": "S/.19.00"},
+                {"nombre": "Chicharrón (5 unidades de costilla)", "precio": "S/.27.00"},
+                {"nombre": "Plato mixto (1 chuleta, 3 unidades de chicharrón)", "precio": "S/.28.00"},
+                {"nombre": "Lomo al jugo con café pasado", "precio": "S/.40.00"},
+                {"nombre": "Pavo al plato", "precio": "S/.28.00"}
             ]
         }
-        // Agrega el resto de las secciones y sus items de manera similar
     ]
 }

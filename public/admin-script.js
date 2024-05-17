@@ -1,42 +1,76 @@
 const socket = io();
 
+// Generar el formulario de edición del menú
 socket.on('contentUpdate', (data) => {
-    const menuForm = document.getElementById('menuForm');
-    menuForm.innerHTML = '';
+    const menuForm = document.getElementById('menu-form');
+    menuForm.innerHTML = ''; // Clear previous content
 
     data.menu.forEach((section, sectionIndex) => {
         const sectionElement = document.createElement('div');
-        sectionElement.innerHTML = `<h2>${section.title}</h2>`;
+        sectionElement.classList.add('menu-section');
+
+        const categoryElement = document.createElement('input');
+        categoryElement.type = 'text';
+        categoryElement.value = section.categoria;
+        categoryElement.dataset.index = sectionIndex;
+        categoryElement.dataset.type = 'category';
+        sectionElement.appendChild(categoryElement);
+
         section.items.forEach((item, itemIndex) => {
             const itemElement = document.createElement('div');
-            itemElement.innerHTML = `
-                <input type="text" value="${item.name}" data-section="${sectionIndex}" data-item="${itemIndex}" class="item-name">
-                <input type="text" value="${item.price}" data-section="${sectionIndex}" data-item="${itemIndex}" class="item-price">
-            `;
+
+            const itemNameElement = document.createElement('input');
+            itemNameElement.type = 'text';
+            itemNameElement.value = item.nombre;
+            itemNameElement.dataset.sectionIndex = sectionIndex;
+            itemNameElement.dataset.itemIndex = itemIndex;
+            itemNameElement.dataset.type = 'name';
+
+            const itemPriceElement = document.createElement('input');
+            itemPriceElement.type = 'text';
+            itemPriceElement.value = item.precio;
+            itemPriceElement.dataset.sectionIndex = sectionIndex;
+            itemPriceElement.dataset.itemIndex = itemIndex;
+            itemPriceElement.dataset.type = 'price';
+
+            itemElement.appendChild(itemNameElement);
+            itemElement.appendChild(itemPriceElement);
             sectionElement.appendChild(itemElement);
         });
+
         menuForm.appendChild(sectionElement);
     });
 });
 
-const saveChanges = () => {
-    const menu = [];
-    const sections = document.querySelectorAll('#menuForm > div');
-    
-    sections.forEach((sectionElement, sectionIndex) => {
-        const section = { title: sectionElement.querySelector('h2').innerText, items: [] };
-        const items = sectionElement.querySelectorAll('div > input');
-        
-        for (let i = 0; i < items.length; i += 2) {
-            const nameInput = items[i];
-            const priceInput = items[i + 1];
-            section.items.push({ name: nameInput.value, price: priceInput.value });
-        }
-        
-        menu.push(section);
+// Guardar cambios desde el formulario de administración
+const saveButton = document.getElementById('save-button');
+saveButton.addEventListener('click', () => {
+    const menuForm = document.getElementById('menu-form');
+    const sections = menuForm.querySelectorAll('.menu-section');
+    const updatedMenu = [];
+
+    sections.forEach(sectionElement => {
+        const categoryElement = sectionElement.querySelector('input[data-type="category"]');
+        const sectionIndex = categoryElement.dataset.index;
+        const category = categoryElement.value;
+
+        const items = [];
+        const itemElements = sectionElement.querySelectorAll('div');
+        itemElements.forEach(itemElement => {
+            const itemNameElement = itemElement.querySelector('input[data-type="name"]');
+            const itemPriceElement = itemElement.querySelector('input[data-type="price"]');
+
+            items.push({
+                nombre: itemNameElement.value,
+                precio: itemPriceElement.value
+            });
+        });
+
+        updatedMenu.push({
+            categoria: category,
+            items: items
+        });
     });
 
-    socket.emit('save', { menu });
-};
-
-document.getElementById('saveButton').addEventListener('click', saveChanges);
+    socket.emit('save', { menu: updatedMenu });
+});

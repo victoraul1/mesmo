@@ -2,16 +2,22 @@ const socket = io();
 
 socket.on('contentUpdate', (data) => {
     const menuContainer = document.getElementById('menu-container');
-    menuContainer.innerHTML = '';
+    menuContainer.innerHTML = ''; // Clear previous content
 
     data.menu.forEach(section => {
         const sectionElement = document.createElement('div');
-        sectionElement.innerHTML = `<h2>${section.title}</h2>`;
+        sectionElement.classList.add('menu-section');
+
+        const categoryElement = document.createElement('h2');
+        categoryElement.textContent = section.categoria;
+        sectionElement.appendChild(categoryElement);
+
         section.items.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.innerHTML = `<p>${item.name} - S/.${item.price}</p>`;
+            const itemElement = document.createElement('p');
+            itemElement.textContent = `${item.nombre} - ${item.precio}`;
             sectionElement.appendChild(itemElement);
         });
+
         menuContainer.appendChild(sectionElement);
     });
 });
