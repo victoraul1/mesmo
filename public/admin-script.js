@@ -1,4 +1,3 @@
-// Establece la conexión con el servidor
 const socket = io();
 
 // Función para generar el formulario de edición del menú
