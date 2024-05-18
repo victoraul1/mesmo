@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
                 return;
             }
             console.log('Menu data updated successfully');
-            io.emit('contentUpdate', updatedMenu);
+            io.emit('contentUpdate', updatedMenu); // Notify all clients of the updated menu
         });
     });
 
@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
                     console.error('Error writing data.json:', err);
                     return;
                 }
-                io.emit('contentUpdate', menuData);
+                io.emit('contentUpdate', menuData); // Notify all clients of the updated menu
             });
         });
     });
@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
                     console.error('Error writing data.json:', err);
                     return;
                 }
-                io.emit('contentUpdate', menuData);
+                io.emit('contentUpdate', menuData); // Notify all clients of the updated menu
             });
         });
     });
@@ -83,25 +83,7 @@ io.on('connection', (socket) => {
                     console.error('Error writing data.json:', err);
                     return;
                 }
-                io.emit('contentUpdate', menuData);
-            });
-        });
-    });
-
-    socket.on('deleteCategory', (sectionIndex) => {
-        fs.readFile('./data.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading data.json:', err);
-                return;
-            }
-            const menuData = JSON.parse(data);
-            menuData.menu.splice(sectionIndex, 1);
-            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
-                if (err) {
-                    console.error('Error writing data.json:', err);
-                    return;
-                }
-                io.emit('contentUpdate', menuData);
+                io.emit('contentUpdate', menuData); // Notify all clients of the updated menu
             });
         });
     });
