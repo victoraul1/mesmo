@@ -28,7 +28,7 @@ function updateForm(menuData) {
                 precio: ''
             };
             section.items.push(newItem);
-            updateForm(currentMenu);
+            updateForm(menuData);
         });
         sectionElement.appendChild(addItemButton);
 
@@ -38,7 +38,7 @@ function updateForm(menuData) {
         deleteCategoryButton.classList.add('delete-category-button');
         deleteCategoryButton.addEventListener('click', () => {
             menuData.splice(sectionIndex, 1);
-            updateForm(currentMenu);
+            updateForm(menuData);
         });
         sectionElement.appendChild(deleteCategoryButton);
 
@@ -73,7 +73,7 @@ function updateForm(menuData) {
                     precio: ''
                 };
                 section.items.push(newItem);
-                updateForm(currentMenu);
+                updateForm(menuData);
             });
             itemElement.appendChild(addItemButton);
 
@@ -83,7 +83,7 @@ function updateForm(menuData) {
             deleteItemButton.classList.add('delete-item-button');
             deleteItemButton.addEventListener('click', () => {
                 section.items.splice(itemIndex, 1);
-                updateForm(currentMenu);
+                updateForm(menuData);
             });
             itemElement.appendChild(deleteItemButton);
 
@@ -94,7 +94,7 @@ function updateForm(menuData) {
     });
 }
 
-// Generate the form for menu editing
+// Generate the menu form
 socket.on('contentUpdate', (data) => {
     currentMenu = data.menu;
     updateForm(currentMenu);
