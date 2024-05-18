@@ -2,7 +2,7 @@ const socket = io();
 
 let currentMenu = [];
 
-// Function to update the form
+// Función para actualizar el formulario
 function updateForm(menuData) {
     const menuForm = document.getElementById('menu-form');
     menuForm.innerHTML = ''; // Clear previous content
@@ -18,19 +18,19 @@ function updateForm(menuData) {
         categoryElement.dataset.type = 'category';
         sectionElement.appendChild(categoryElement);
 
-        const addItemButton = document.createElement('button');
-        addItemButton.type = 'button';
-        addItemButton.innerHTML = '+';
-        addItemButton.classList.add('add-item-button');
-        addItemButton.addEventListener('click', () => {
-            const newItem = {
-                nombre: '',
-                precio: ''
+        const addCategoryButton = document.createElement('button');
+        addCategoryButton.type = 'button';
+        addCategoryButton.innerHTML = '+';
+        addCategoryButton.classList.add('add-category-button');
+        addCategoryButton.addEventListener('click', () => {
+            const newCategory = {
+                categoria: '',
+                items: []
             };
-            section.items.push(newItem);
-            updateForm(menuData);
+            menuData.push(newCategory);
+            updateForm(currentMenu);
         });
-        sectionElement.appendChild(addItemButton);
+        sectionElement.appendChild(addCategoryButton);
 
         const deleteCategoryButton = document.createElement('button');
         deleteCategoryButton.type = 'button';
@@ -38,7 +38,7 @@ function updateForm(menuData) {
         deleteCategoryButton.classList.add('delete-category-button');
         deleteCategoryButton.addEventListener('click', () => {
             menuData.splice(sectionIndex, 1);
-            updateForm(menuData);
+            updateForm(currentMenu);
         });
         sectionElement.appendChild(deleteCategoryButton);
 
@@ -73,7 +73,7 @@ function updateForm(menuData) {
                     precio: ''
                 };
                 section.items.push(newItem);
-                updateForm(menuData);
+                updateForm(currentMenu);
             });
             itemElement.appendChild(addItemButton);
 
@@ -83,7 +83,7 @@ function updateForm(menuData) {
             deleteItemButton.classList.add('delete-item-button');
             deleteItemButton.addEventListener('click', () => {
                 section.items.splice(itemIndex, 1);
-                updateForm(menuData);
+                updateForm(currentMenu);
             });
             itemElement.appendChild(deleteItemButton);
 
@@ -94,13 +94,13 @@ function updateForm(menuData) {
     });
 }
 
-// Generate the menu form
+// Generar el formulario de edición del menú
 socket.on('contentUpdate', (data) => {
     currentMenu = data.menu;
     updateForm(currentMenu);
 });
 
-// Save changes from the admin form
+// Guardar cambios desde el formulario de administración
 const saveButton = document.getElementById('save-button');
 saveButton.addEventListener('click', () => {
     const menuForm = document.getElementById('menu-form');
