@@ -52,3 +52,81 @@ button#add-category {
 button:hover {
     background-color: #218838;
 }
+
+.menu-section {
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.menu-item input[type="text"] {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.add-category, .add-item, .remove-item, .remove-category {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.add-category, .add-item {
+    background-color: green;
+    color: white;
+}
+
+.remove-category, .remove-item {
+    background-color: red;
+    color: white;
+}
+
+#save-button {
+    margin-top: 20px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
+.menu-section {
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.menu-item input[type="text"] {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.add-category, .add-item, .remove-item, .remove-category {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.add-category, .add-item {
+    background-color: green;
+    color: white;
+}
+
+.remove-category, .remove-item {
+    background-color: red;
+    color: white;
+}
+
+#save-button {
+    margin-top: 20px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
+
