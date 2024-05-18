@@ -20,10 +20,12 @@ h1 {
 
 .menu-section {
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .menu-section input[type="text"] {
-    width: calc(100% - 100px);
+    width: calc(100% - 60px);
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -134,4 +136,18 @@ button:disabled {
 
 .admin-actions button {
     margin-bottom: 10px;
+}
+
+.category-buttons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.category-buttons button {
+    margin-right: 5px;
+}
+
+.menu-section .category-input {
+    flex-grow: 1;
 }

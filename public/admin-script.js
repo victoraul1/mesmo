@@ -1,7 +1,3 @@
-const socket = io();
-
-let currentMenu = [];
-
 // Función para actualizar el formulario
 function updateForm(menuData) {
     const menuForm = document.getElementById('menu-form');
@@ -11,26 +7,35 @@ function updateForm(menuData) {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
+        const categoryContainer = document.createElement('div');
+        categoryContainer.classList.add('category-container');
+        sectionElement.appendChild(categoryContainer);
+
         const categoryElement = document.createElement('input');
         categoryElement.type = 'text';
         categoryElement.value = section.categoria;
         categoryElement.dataset.index = sectionIndex;
         categoryElement.dataset.type = 'category';
-        sectionElement.appendChild(categoryElement);
+        categoryElement.classList.add('category-input');
+        categoryContainer.appendChild(categoryElement);
 
-        const addItemButton = document.createElement('button');
-        addItemButton.type = 'button';
-        addItemButton.innerHTML = '+';
-        addItemButton.classList.add('add-item-button');
-        addItemButton.addEventListener('click', () => {
-            const newItem = {
-                nombre: '',
-                precio: ''
+        const categoryButtons = document.createElement('div');
+        categoryButtons.classList.add('category-buttons');
+        categoryContainer.appendChild(categoryButtons);
+
+        const addCategoryButton = document.createElement('button');
+        addCategoryButton.type = 'button';
+        addCategoryButton.innerHTML = '+';
+        addCategoryButton.classList.add('add-category-btn');
+        addCategoryButton.addEventListener('click', () => {
+            const newCategory = {
+                categoria: '',
+                items: []
             };
-            section.items.push(newItem);
-            updateForm(currentMenu); // Render the updated form
+            menuData.push(newCategory);
+            updateForm(currentMenu);
         });
-        sectionElement.appendChild(addItemButton);
+        categoryButtons.appendChild(addCategoryButton);
 
         const deleteCategoryButton = document.createElement('button');
         deleteCategoryButton.type = 'button';
@@ -38,9 +43,9 @@ function updateForm(menuData) {
         deleteCategoryButton.classList.add('delete-category-button');
         deleteCategoryButton.addEventListener('click', () => {
             menuData.splice(sectionIndex, 1);
-            updateForm(currentMenu); // Render the updated form
+            updateForm(currentMenu);
         });
-        sectionElement.appendChild(deleteCategoryButton);
+        categoryButtons.appendChild(deleteCategoryButton);
 
         section.items.forEach((item, itemIndex) => {
             const itemElement = document.createElement('div');
@@ -99,43 +104,3 @@ function updateForm(menuData) {
         menuForm.appendChild(sectionElement);
     });
 }
-
-// Generar el formulario de edición del menú
-socket.on('contentUpdate', (data) => {
-    currentMenu = data.menu;
-    updateForm(currentMenu);
-});
-
-// Guardar cambios desde el formulario de administración
-const saveButton = document.getElementById('save-button');
-saveButton.addEventListener('click', () => {
-    const menuForm = document.getElementById('menu-form');
-    const sections = menuForm.querySelectorAll('.menu-section');
-    const updatedMenu = [];
-
-    sections.forEach(sectionElement => {
-        const categoryElement = sectionElement.querySelector('input[data-type="category"]');
-        const sectionIndex = categoryElement.dataset.index;
-        const category = categoryElement.value;
-
-        const items = [];
-        const itemElements = sectionElement.querySelectorAll('.menu-item');
-        itemElements.forEach(itemElement => {
-            const itemNameElement = itemElement.querySelector('input[data-type="name"]');
-            const itemPriceElement = itemElement.querySelector('input[data-type="price"]');
-
-            items.push({
-                nombre: itemNameElement.value,
-                precio: itemPriceElement.value
-            });
-        });
-
-        updatedMenu.push({
-            categoria: category,
-            items: items
-        });
-    });
-
-    currentMenu = updatedMenu;
-    socket.emit('save', { menu: currentMenu });
-});
