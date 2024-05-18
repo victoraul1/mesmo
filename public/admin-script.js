@@ -1,43 +1,11 @@
 const socket = io();
 
-// Función para guardar los valores del formulario actual
-function getCurrentFormValues() {
-    const menuForm = document.getElementById('menu-form');
-    const sections = menuForm.querySelectorAll('.menu-section');
-    const updatedMenu = [];
-
-    sections.forEach(sectionElement => {
-        const categoryElement = sectionElement.querySelector('input[data-type="category"]');
-        const sectionIndex = categoryElement.dataset.index;
-        const category = categoryElement.value;
-
-        const items = [];
-        const itemElements = sectionElement.querySelectorAll('div.menu-item');
-        itemElements.forEach(itemElement => {
-            const itemNameElement = itemElement.querySelector('input[data-type="name"]');
-            const itemPriceElement = itemElement.querySelector('input[data-type="price"]');
-
-            items.push({
-                nombre: itemNameElement.value,
-                precio: itemPriceElement.value
-            });
-        });
-
-        updatedMenu.push({
-            categoria: category,
-            items: items
-        });
-    });
-
-    return updatedMenu;
-}
-
-// Función para establecer los valores del formulario actual
-function setCurrentFormValues(updatedMenu) {
+// Generar el formulario de edición del menú
+socket.on('contentUpdate', (data) => {
     const menuForm = document.getElementById('menu-form');
     menuForm.innerHTML = ''; // Clear previous content
 
-    updatedMenu.forEach((section, sectionIndex) => {
+    data.menu.forEach((section, sectionIndex) => {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
@@ -47,6 +15,30 @@ function setCurrentFormValues(updatedMenu) {
         categoryElement.dataset.index = sectionIndex;
         categoryElement.dataset.type = 'category';
         sectionElement.appendChild(categoryElement);
+
+        const addItemButton = document.createElement('button');
+        addItemButton.type = 'button';
+        addItemButton.innerHTML = '+';
+        addItemButton.classList.add('add-item-button');
+        addItemButton.addEventListener('click', () => {
+            const newItem = {
+                nombre: '',
+                precio: ''
+            };
+            section.items.push(newItem);
+            socket.emit('addItem', { sectionIndex, newItem });
+        });
+        sectionElement.appendChild(addItemButton);
+
+        const deleteCategoryButton = document.createElement('button');
+        deleteCategoryButton.type = 'button';
+        deleteCategoryButton.innerHTML = '-';
+        deleteCategoryButton.classList.add('delete-category-button');
+        deleteCategoryButton.addEventListener('click', () => {
+            data.menu.splice(sectionIndex, 1);
+            socket.emit('save', data);
+        });
+        sectionElement.appendChild(deleteCategoryButton);
 
         section.items.forEach((item, itemIndex) => {
             const itemElement = document.createElement('div');
@@ -68,55 +60,67 @@ function setCurrentFormValues(updatedMenu) {
 
             itemElement.appendChild(itemNameElement);
             itemElement.appendChild(itemPriceElement);
+
+            const addItemButton = document.createElement('button');
+            addItemButton.type = 'button';
+            addItemButton.innerHTML = '+';
+            addItemButton.classList.add('add-item-button');
+            addItemButton.addEventListener('click', () => {
+                const newItem = {
+                    nombre: '',
+                    precio: ''
+                };
+                section.items.push(newItem);
+                socket.emit('addItem', { sectionIndex, newItem });
+            });
+            itemElement.appendChild(addItemButton);
+
+            const deleteItemButton = document.createElement('button');
+            deleteItemButton.type = 'button';
+            deleteItemButton.innerHTML = '-';
+            deleteItemButton.classList.add('delete-item-button');
+            deleteItemButton.addEventListener('click', () => {
+                section.items.splice(itemIndex, 1);
+                socket.emit('deleteItem', { sectionIndex, itemIndex });
+            });
+            itemElement.appendChild(deleteItemButton);
+
             sectionElement.appendChild(itemElement);
         });
 
         menuForm.appendChild(sectionElement);
     });
-}
-
-// Generar el formulario de edición del menú
-socket.on('contentUpdate', (data) => {
-    setCurrentFormValues(data.menu);
 });
-
-// Función para agregar una nueva categoría
-function addCategory() {
-    const currentFormValues = getCurrentFormValues();
-    currentFormValues.push({
-        categoria: '',
-        items: []
-    });
-    setCurrentFormValues(currentFormValues);
-}
-
-// Función para agregar un nuevo ítem
-function addItem(sectionIndex) {
-    const currentFormValues = getCurrentFormValues();
-    currentFormValues[sectionIndex].items.push({
-        nombre: '',
-        precio: ''
-    });
-    setCurrentFormValues(currentFormValues);
-}
-
-// Función para eliminar una categoría
-function deleteCategory(sectionIndex) {
-    const currentFormValues = getCurrentFormValues();
-    currentFormValues.splice(sectionIndex, 1);
-    setCurrentFormValues(currentFormValues);
-}
-
-// Función para eliminar un ítem
-function deleteItem(sectionIndex, itemIndex) {
-    const currentFormValues = getCurrentFormValues();
-    currentFormValues[sectionIndex].items.splice(itemIndex, 1);
-    setCurrentFormValues(currentFormValues);
-}
 
 // Guardar cambios desde el formulario de administración
 const saveButton = document.getElementById('save-button');
 saveButton.addEventListener('click', () => {
-    const updatedMenu = getCurrentFormValues();
+    const menuForm = document.getElementById('menu-form');
+    const sections = menuForm.querySelectorAll('.menu-section');
+    const updatedMenu = [];
+
+    sections.forEach(sectionElement => {
+        const categoryElement = sectionElement.querySelector('input[data-type="category"]');
+        const sectionIndex = categoryElement.dataset.index;
+        const category = categoryElement.value;
+
+        const items = [];
+        const itemElements = sectionElement.querySelectorAll('.menu-item');
+        itemElements.forEach(itemElement => {
+            const itemNameElement = itemElement.querySelector('input[data-type="name"]');
+            const itemPriceElement = itemElement.querySelector('input[data-type="price"]');
+
+            items.push({
+                nombre: itemNameElement.value,
+                precio: itemPriceElement.value
+            });
+        });
+
+        updatedMenu.push({
+            categoria: category,
+            items: items
+        });
+    });
+
     socket.emit('save', { menu: updatedMenu });
 });
