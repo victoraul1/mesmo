@@ -1,11 +1,11 @@
 const socket = io();
 
+// Escuchar el evento de actualización del contenido
 socket.on('contentUpdate', (data) => {
     const menuContainer = document.getElementById('menu-container');
-    if (!menuContainer) return;
-    menuContainer.innerHTML = ''; // Clear previous content
+    menuContainer.innerHTML = ''; // Limpiar contenido previo
 
-    data.menu.forEach(section => {
+    data.menu.forEach((section) => {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
@@ -13,7 +13,7 @@ socket.on('contentUpdate', (data) => {
         categoryElement.textContent = section.categoria;
         sectionElement.appendChild(categoryElement);
 
-        section.items.forEach(item => {
+        section.items.forEach((item) => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('menu-item');
 
@@ -22,7 +22,7 @@ socket.on('contentUpdate', (data) => {
             itemElement.appendChild(itemNameElement);
 
             const itemPriceElement = document.createElement('span');
-            itemPriceElement.textContent = `S/. ${item.precio}`;
+            itemPriceElement.textContent = item.precio;
             itemElement.appendChild(itemPriceElement);
 
             sectionElement.appendChild(itemElement);
