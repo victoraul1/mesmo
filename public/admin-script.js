@@ -1,11 +1,13 @@
 const socket = io();
 
-// Generar el formulario de edición del menú
-socket.on('contentUpdate', (data) => {
+let currentMenu = [];
+
+// Función para actualizar el formulario
+function updateForm(menuData) {
     const menuForm = document.getElementById('menu-form');
     menuForm.innerHTML = ''; // Clear previous content
 
-    data.menu.forEach((section, sectionIndex) => {
+    menuData.forEach((section, sectionIndex) => {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
@@ -26,7 +28,7 @@ socket.on('contentUpdate', (data) => {
                 precio: ''
             };
             section.items.push(newItem);
-            socket.emit('addItem', { sectionIndex, newItem });
+            updateForm(currentMenu);
         });
         sectionElement.appendChild(addItemButton);
 
@@ -35,8 +37,8 @@ socket.on('contentUpdate', (data) => {
         deleteCategoryButton.innerHTML = '-';
         deleteCategoryButton.classList.add('delete-category-button');
         deleteCategoryButton.addEventListener('click', () => {
-            data.menu.splice(sectionIndex, 1);
-            socket.emit('save', data);
+            menuData.splice(sectionIndex, 1);
+            updateForm(currentMenu);
         });
         sectionElement.appendChild(deleteCategoryButton);
 
@@ -71,7 +73,7 @@ socket.on('contentUpdate', (data) => {
                     precio: ''
                 };
                 section.items.push(newItem);
-                socket.emit('addItem', { sectionIndex, newItem });
+                updateForm(currentMenu);
             });
             itemElement.appendChild(addItemButton);
 
@@ -81,7 +83,7 @@ socket.on('contentUpdate', (data) => {
             deleteItemButton.classList.add('delete-item-button');
             deleteItemButton.addEventListener('click', () => {
                 section.items.splice(itemIndex, 1);
-                socket.emit('deleteItem', { sectionIndex, itemIndex });
+                updateForm(currentMenu);
             });
             itemElement.appendChild(deleteItemButton);
 
@@ -90,6 +92,12 @@ socket.on('contentUpdate', (data) => {
 
         menuForm.appendChild(sectionElement);
     });
+}
+
+// Generar el formulario de edición del menú
+socket.on('contentUpdate', (data) => {
+    currentMenu = data.menu;
+    updateForm(currentMenu);
 });
 
 // Guardar cambios desde el formulario de administración
@@ -122,5 +130,6 @@ saveButton.addEventListener('click', () => {
         });
     });
 
-    socket.emit('save', { menu: updatedMenu });
+    currentMenu = updatedMenu;
+    socket.emit('save', { menu: currentMenu });
 });

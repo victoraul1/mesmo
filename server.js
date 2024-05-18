@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
                 return;
             }
             console.log('Menu data updated successfully');
-            io.emit('contentUpdate', updatedMenu); // Notify all clients of the updated menu
+            io.emit('contentUpdate', { menu: updatedMenu });
         });
     });
 
@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
                     console.error('Error writing data.json:', err);
                     return;
                 }
-                io.emit('contentUpdate', menuData); // Notify all clients of the updated menu
+                io.emit('contentUpdate', menuData);
             });
         });
     });
@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
                     console.error('Error writing data.json:', err);
                     return;
                 }
-                io.emit('contentUpdate', menuData); // Notify all clients of the updated menu
+                io.emit('contentUpdate', menuData);
             });
         });
     });
@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
                     console.error('Error writing data.json:', err);
                     return;
                 }
-                io.emit('contentUpdate', menuData); // Notify all clients of the updated menu
+                io.emit('contentUpdate', menuData);
             });
         });
     });
