@@ -1,11 +1,13 @@
 const socket = io();
 
-// Function to render the menu
-function renderMenu(data) {
+let currentMenu = [];
+
+// Función para actualizar el formulario
+function updateForm(menuData) {
     const menuForm = document.getElementById('menu-form');
     menuForm.innerHTML = ''; // Clear previous content
 
-    data.menu.forEach((section, sectionIndex) => {
+    menuData.forEach((section, sectionIndex) => {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
@@ -14,29 +16,31 @@ function renderMenu(data) {
         categoryElement.value = section.categoria;
         categoryElement.dataset.index = sectionIndex;
         categoryElement.dataset.type = 'category';
+        sectionElement.appendChild(categoryElement);
 
-        const categoryButtons = document.createElement('div');
-        categoryButtons.classList.add('category-buttons');
-
-        const addCategoryButton = document.createElement('button');
-        addCategoryButton.classList.add('add-category-btn');
-        addCategoryButton.innerHTML = '+';
-        addCategoryButton.addEventListener('click', () => {
-            addCategory(sectionIndex);
+        const addItemButton = document.createElement('button');
+        addItemButton.type = 'button';
+        addItemButton.innerHTML = '+';
+        addItemButton.classList.add('add-item-button');
+        addItemButton.addEventListener('click', () => {
+            const newItem = {
+                nombre: '',
+                precio: ''
+            };
+            section.items.push(newItem);
+            updateForm(currentMenu);
         });
+        sectionElement.appendChild(addItemButton);
 
         const deleteCategoryButton = document.createElement('button');
-        deleteCategoryButton.classList.add('delete', 'delete-category-btn');
+        deleteCategoryButton.type = 'button';
         deleteCategoryButton.innerHTML = '-';
+        deleteCategoryButton.classList.add('delete-category-button');
         deleteCategoryButton.addEventListener('click', () => {
-            deleteCategory(sectionIndex);
+            menuData.splice(sectionIndex, 1);
+            updateForm(currentMenu);
         });
-
-        categoryButtons.appendChild(addCategoryButton);
-        categoryButtons.appendChild(deleteCategoryButton);
-
-        sectionElement.appendChild(categoryElement);
-        sectionElement.appendChild(categoryButtons);
+        sectionElement.appendChild(deleteCategoryButton);
 
         section.items.forEach((item, itemIndex) => {
             const itemElement = document.createElement('div');
@@ -55,31 +59,33 @@ function renderMenu(data) {
             itemPriceElement.dataset.sectionIndex = sectionIndex;
             itemPriceElement.dataset.itemIndex = itemIndex;
             itemPriceElement.dataset.type = 'price';
-            itemPriceElement.classList.add('price');
-
-            const itemButtons = document.createElement('div');
-            itemButtons.classList.add('item-buttons');
-
-            const addItemButton = document.createElement('button');
-            addItemButton.classList.add('add-item-btn');
-            addItemButton.innerHTML = '+';
-            addItemButton.addEventListener('click', () => {
-                addItem(sectionIndex, itemIndex);
-            });
-
-            const deleteItemButton = document.createElement('button');
-            deleteItemButton.classList.add('delete', 'delete-item-btn');
-            deleteItemButton.innerHTML = '-';
-            deleteItemButton.addEventListener('click', () => {
-                deleteItem(sectionIndex, itemIndex);
-            });
-
-            itemButtons.appendChild(addItemButton);
-            itemButtons.appendChild(deleteItemButton);
 
             itemElement.appendChild(itemNameElement);
             itemElement.appendChild(itemPriceElement);
-            itemElement.appendChild(itemButtons);
+
+            const addItemButton = document.createElement('button');
+            addItemButton.type = 'button';
+            addItemButton.innerHTML = '+';
+            addItemButton.classList.add('add-item-button');
+            addItemButton.addEventListener('click', () => {
+                const newItem = {
+                    nombre: '',
+                    precio: ''
+                };
+                section.items.push(newItem);
+                updateForm(currentMenu);
+            });
+            itemElement.appendChild(addItemButton);
+
+            const deleteItemButton = document.createElement('button');
+            deleteItemButton.type = 'button';
+            deleteItemButton.innerHTML = '-';
+            deleteItemButton.classList.add('delete-item-button');
+            deleteItemButton.addEventListener('click', () => {
+                section.items.splice(itemIndex, 1);
+                updateForm(currentMenu);
+            });
+            itemElement.appendChild(deleteItemButton);
 
             sectionElement.appendChild(itemElement);
         });
@@ -88,12 +94,13 @@ function renderMenu(data) {
     });
 }
 
-// Load initial menu data
+// Generar el formulario de edición del menú
 socket.on('contentUpdate', (data) => {
-    renderMenu(data);
+    currentMenu = data.menu;
+    updateForm(currentMenu);
 });
 
-// Save button event listener
+// Guardar cambios desde el formulario de administración
 const saveButton = document.getElementById('save-button');
 saveButton.addEventListener('click', () => {
     const menuForm = document.getElementById('menu-form');
@@ -123,20 +130,6 @@ saveButton.addEventListener('click', () => {
         });
     });
 
-    socket.emit('save', { menu: updatedMenu });
+    currentMenu = updatedMenu;
+    socket.emit('save', { menu: currentMenu });
 });
-
-// Function to add a new category
-function addCategory(sectionIndex) {
-    socket.emit('addCategory', { categoria: '', items: [] });
-}
-
-// Function to add a new item
-function addItem(sectionIndex, itemIndex) {
-    socket.emit('addItem', { sectionIndex, newItem: { nombre: '', precio: '' } });
-}
-
-// Function to delete an item
-function deleteItem(sectionIndex, itemIndex) {
-    socket.emit('deleteItem', { sectionIndex, itemIndex });
-}
