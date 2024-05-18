@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
                 return;
             }
             console.log('Menu data updated successfully');
-            io.emit('contentUpdate', updatedMenu);
+            io.emit('contentUpdate', updatedMenu); // Broadcast the update to all connected clients
         });
     });
 
