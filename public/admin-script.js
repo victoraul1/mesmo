@@ -1,3 +1,7 @@
+const socket = io();
+
+let currentMenu = [];
+
 // Función para actualizar el formulario
 function updateForm(menuData) {
     const menuForm = document.getElementById('menu-form');
@@ -65,42 +69,4 @@ function updateForm(menuData) {
             itemPriceElement.type = 'text';
             itemPriceElement.value = item.precio;
             itemPriceElement.dataset.sectionIndex = sectionIndex;
-            itemPriceElement.dataset.itemIndex = itemIndex;
-            itemPriceElement.dataset.type = 'price';
-            itemPriceElement.addEventListener('input', (event) => {
-                currentMenu[sectionIndex].items[itemIndex].precio = event.target.value;
-            });
-
-            itemElement.appendChild(itemNameElement);
-            itemElement.appendChild(itemPriceElement);
-
-            const addItemButton = document.createElement('button');
-            addItemButton.type = 'button';
-            addItemButton.innerHTML = '+';
-            addItemButton.classList.add('add-item-button');
-            addItemButton.addEventListener('click', () => {
-                const newItem = {
-                    nombre: '',
-                    precio: ''
-                };
-                section.items.push(newItem);
-                updateForm(currentMenu); // Render the updated form
-            });
-            itemElement.appendChild(addItemButton);
-
-            const deleteItemButton = document.createElement('button');
-            deleteItemButton.type = 'button';
-            deleteItemButton.innerHTML = '-';
-            deleteItemButton.classList.add('delete-item-button');
-            deleteItemButton.addEventListener('click', () => {
-                section.items.splice(itemIndex, 1);
-                updateForm(currentMenu); // Render the updated form
-            });
-            itemElement.appendChild(deleteItemButton);
-
-            sectionElement.appendChild(itemElement);
-        });
-
-        menuForm.appendChild(sectionElement);
-    });
-}
+            itemPriceElement.dataset.itemIndex = item
