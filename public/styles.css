@@ -20,8 +20,6 @@ h1 {
 
 .menu-section {
     margin-bottom: 20px;
-    display: flex;
-    align-items: center;
 }
 
 .menu-section input[type="text"] {
@@ -136,18 +134,4 @@ button:disabled {
 
 .admin-actions button {
     margin-bottom: 10px;
-}
-
-.category-buttons {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-}
-
-.category-buttons button {
-    margin-right: 5px;
-}
-
-.menu-section .category-input {
-    flex-grow: 1;
 }

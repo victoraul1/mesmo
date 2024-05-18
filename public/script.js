@@ -1,19 +1,19 @@
 const socket = io();
 
-// Escuchar el evento de actualización del contenido
-socket.on('contentUpdate', (data) => {
+// Function to display the menu
+function displayMenu(menuData) {
     const menuContainer = document.getElementById('menu-container');
-    menuContainer.innerHTML = ''; // Limpiar contenido previo
+    menuContainer.innerHTML = ''; // Clear previous content
 
-    data.menu.forEach((section) => {
+    menuData.forEach(section => {
         const sectionElement = document.createElement('div');
         sectionElement.classList.add('menu-section');
 
-        const categoryElement = document.createElement('h3');
+        const categoryElement = document.createElement('h2');
         categoryElement.textContent = section.categoria;
         sectionElement.appendChild(categoryElement);
 
-        section.items.forEach((item) => {
+        section.items.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.classList.add('menu-item');
 
@@ -30,4 +30,9 @@ socket.on('contentUpdate', (data) => {
 
         menuContainer.appendChild(sectionElement);
     });
+}
+
+// Listen for menu updates
+socket.on('contentUpdate', (data) => {
+    displayMenu(data.menu);
 });
