@@ -30,61 +30,7 @@ io.on('connection', (socket) => {
                 return;
             }
             console.log('Menu data updated successfully');
-            io.emit('contentUpdate', { menu: updatedMenu });
-        });
-    });
-
-    socket.on('addCategory', (newCategory) => {
-        fs.readFile('./data.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading data.json:', err);
-                return;
-            }
-            const menuData = JSON.parse(data);
-            menuData.menu.push(newCategory);
-            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
-                if (err) {
-                    console.error('Error writing data.json:', err);
-                    return;
-                }
-                io.emit('contentUpdate', menuData);
-            });
-        });
-    });
-
-    socket.on('addItem', ({ sectionIndex, newItem }) => {
-        fs.readFile('./data.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading data.json:', err);
-                return;
-            }
-            const menuData = JSON.parse(data);
-            menuData.menu[sectionIndex].items.push(newItem);
-            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
-                if (err) {
-                    console.error('Error writing data.json:', err);
-                    return;
-                }
-                io.emit('contentUpdate', menuData);
-            });
-        });
-    });
-
-    socket.on('deleteItem', ({ sectionIndex, itemIndex }) => {
-        fs.readFile('./data.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading data.json:', err);
-                return;
-            }
-            const menuData = JSON.parse(data);
-            menuData.menu[sectionIndex].items.splice(itemIndex, 1);
-            fs.writeFile('./data.json', JSON.stringify(menuData, null, 2), 'utf8', (err) => {
-                if (err) {
-                    console.error('Error writing data.json:', err);
-                    return;
-                }
-                io.emit('contentUpdate', menuData);
-            });
+            io.emit('contentUpdate', { menu: updatedMenu.menu });
         });
     });
 
