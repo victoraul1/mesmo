@@ -1,132 +1,86 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 20px;
 }
 
-#menu-container, #menu-form {
+#menu-form-container {
     max-width: 800px;
     margin: 0 auto;
-    background-color: #fff;
+    background: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .menu-section {
     margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f1f1f1;
 }
 
-.menu-item {
+.category-container {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 }
 
-input[type="text"] {
-    width: calc(50% - 10px);
-    padding: 8px;
+.category-input {
+    flex: 1;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+}
+
+.item-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
 }
 
-h3 {
-    margin-top: 0;
+.item-input, .price-input {
+    flex: 1;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #28a745;
+.add-button, .delete-button {
+    background-color: #4CAF50;
     color: white;
+    border: none;
+    padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    margin-right: 5px;
 }
 
-button#add-category {
-    margin-right: 10px;
+.add-button {
+    background-color: #4CAF50;
 }
 
-button:hover {
-    background-color: #218838;
+.delete-button {
+    background-color: #f44336;
 }
 
-.menu-section {
-    margin-bottom: 20px;
-}
-
-.menu-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.menu-item input[type="text"] {
-    flex-grow: 1;
-    margin-right: 10px;
-}
-
-.add-category, .add-item, .remove-item, .remove-category {
-    margin-left: 10px;
+.save-button, .add-category-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-}
-
-.add-category, .add-item {
-    background-color: green;
-    color: white;
-}
-
-.remove-category, .remove-item {
-    background-color: red;
-    color: white;
-}
-
-#save-button {
     margin-top: 20px;
-    background-color: blue;
-    color: white;
-    cursor: pointer;
 }
 
-.menu-section {
-    margin-bottom: 20px;
+.save-button:hover, .add-category-button:hover {
+    background-color: #45a049;
 }
-
-.menu-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.menu-item input[type="text"] {
-    flex-grow: 1;
-    margin-right: 10px;
-}
-
-.add-category, .add-item, .remove-item, .remove-category {
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-.add-category, .add-item {
-    background-color: green;
-    color: white;
-}
-
-.remove-category, .remove-item {
-    background-color: red;
-    color: white;
-}
-
-#save-button {
-    margin-top: 20px;
-    background-color: blue;
-    color: white;
-    cursor: pointer;
-}
-
-

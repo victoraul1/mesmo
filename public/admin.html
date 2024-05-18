@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Menu</title>
+    <title>Admin Panel</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="menu-form">
-        <!-- El contenido se generará dinámicamente aquí -->
+    <div id="menu-form-container">
+        <form id="menu-form"></form>
+        <button id="add-category-button" class="add-category-button">Agregar Categoría</button>
+        <button id="save-button" class="save-button">Guardar Cambios</button>
     </div>
-    <button id="save-button">Guardar cambios</button>
     <script src="/socket.io/socket.io.js"></script>
     <script src="admin-script.js"></script>
 </body>
