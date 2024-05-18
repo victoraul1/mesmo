@@ -17,7 +17,7 @@ const generateMenuForm = (data) => {
         sectionElement.appendChild(categoryElement);
 
         const categoryButtonsDiv = document.createElement('div');
-        categoryButtonsDiv.classList.add('buttons-div');
+        categoryButtonsDiv.classList.add('category-buttons');
 
         const addCategoryButton = document.createElement('button');
         addCategoryButton.innerHTML = '+';
@@ -62,7 +62,7 @@ const generateMenuForm = (data) => {
             itemPriceElement.classList.add('item-price-input');
 
             const itemButtonsDiv = document.createElement('div');
-            itemButtonsDiv.classList.add('buttons-div');
+            itemButtonsDiv.classList.add('item-buttons');
 
             const addItemButton = document.createElement('button');
             addItemButton.innerHTML = '+';

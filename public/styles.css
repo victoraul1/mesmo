@@ -8,7 +8,7 @@ body {
 }
 
 .menu-section input[type="text"] {
-    width: calc(100% - 60px);
+    width: calc(80% - 60px);
     display: inline-block;
     margin-bottom: 10px;
 }
@@ -16,17 +16,23 @@ body {
 .menu-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
 }
 
-.buttons-div {
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 10px;
+.menu-item input[type="text"] {
+    width: calc(80% - 60px);
 }
 
-button {
-    margin-left: 5px;
+.category-buttons, .item-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.category-buttons button, .item-buttons button {
+    margin: 2px 0;
     padding: 5px 10px;
 }
 
