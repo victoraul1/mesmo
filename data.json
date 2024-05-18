@@ -3,41 +3,17 @@
     {
       "categoria": "DESAYUNOS",
       "items": [
-        {
-          "nombre": "Tamal (pollo)",
-          "descripcion": "",
-          "precio": "7.50"
-        },
-        {
-          "nombre": "Humita",
-          "descripcion": "",
-          "precio": "8.00"
-        },
-        {
-          "nombre": "Papa Rellena",
-          "descripcion": "",
-          "precio": "8.00"
-        }
+        {"nombre": "Tamal (pollo)", "precio": "7.50"},
+        {"nombre": "Humita", "precio": "8.00"},
+        {"nombre": "Papa Rellena", "precio": "8.00"}
       ]
     },
     {
       "categoria": "SÁNDWICHES",
       "items": [
-        {
-          "nombre": "Pan con jamón",
-          "descripcion": "",
-          "precio": "14.50"
-        },
-        {
-          "nombre": "Pan con pavo",
-          "descripcion": "",
-          "precio": "13.50"
-        },
-        {
-          "nombre": "Pan con chicharrón",
-          "descripcion": "",
-          "precio": "15.00"
-        }
+        {"nombre": "Pan con jamón", "precio": "14.50"},
+        {"nombre": "Pan con pavo", "precio": "13.50"},
+        {"nombre": "Pan con chicharrón", "precio": "15.00"}
       ]
     }
   ]
