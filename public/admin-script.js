@@ -28,7 +28,7 @@ function updateForm(menuData) {
                 precio: ''
             };
             section.items.push(newItem);
-            updateForm(currentMenu);
+            updateForm(currentMenu); // Render the updated form
         });
         sectionElement.appendChild(addItemButton);
 
@@ -38,7 +38,7 @@ function updateForm(menuData) {
         deleteCategoryButton.classList.add('delete-category-button');
         deleteCategoryButton.addEventListener('click', () => {
             menuData.splice(sectionIndex, 1);
-            updateForm(currentMenu);
+            updateForm(currentMenu); // Render the updated form
         });
         sectionElement.appendChild(deleteCategoryButton);
 
@@ -52,6 +52,9 @@ function updateForm(menuData) {
             itemNameElement.dataset.sectionIndex = sectionIndex;
             itemNameElement.dataset.itemIndex = itemIndex;
             itemNameElement.dataset.type = 'name';
+            itemNameElement.addEventListener('input', (event) => {
+                currentMenu[sectionIndex].items[itemIndex].nombre = event.target.value;
+            });
 
             const itemPriceElement = document.createElement('input');
             itemPriceElement.type = 'text';
@@ -59,6 +62,9 @@ function updateForm(menuData) {
             itemPriceElement.dataset.sectionIndex = sectionIndex;
             itemPriceElement.dataset.itemIndex = itemIndex;
             itemPriceElement.dataset.type = 'price';
+            itemPriceElement.addEventListener('input', (event) => {
+                currentMenu[sectionIndex].items[itemIndex].precio = event.target.value;
+            });
 
             itemElement.appendChild(itemNameElement);
             itemElement.appendChild(itemPriceElement);
@@ -73,7 +79,7 @@ function updateForm(menuData) {
                     precio: ''
                 };
                 section.items.push(newItem);
-                updateForm(currentMenu);
+                updateForm(currentMenu); // Render the updated form
             });
             itemElement.appendChild(addItemButton);
 
@@ -83,7 +89,7 @@ function updateForm(menuData) {
             deleteItemButton.classList.add('delete-item-button');
             deleteItemButton.addEventListener('click', () => {
                 section.items.splice(itemIndex, 1);
-                updateForm(currentMenu);
+                updateForm(currentMenu); // Render the updated form
             });
             itemElement.appendChild(deleteItemButton);
 
