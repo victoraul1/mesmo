@@ -4,18 +4,40 @@ const quill = new Quill('#editor', {
     theme: 'snow'
 });
 
-// Función para cargar el contenido del menú en Quill
-function loadMenuContent(content) {
-    quill.clipboard.dangerouslyPasteHTML(content);
-}
-
-// Recibir el contenido del menú desde el servidor
 socket.on('contentUpdate', (data) => {
-    loadMenuContent(data.content);
+    quill.clipboard.dangerouslyPasteHTML(data.content);
 });
 
-// Guardar el contenido del menú cuando se hace clic en "Guardar Cambios"
 document.getElementById('save-button').addEventListener('click', () => {
-    const content = quill.root.innerHTML;
-    socket.emit('save', { content });
+    let content = quill.root.innerHTML;
+    content = formatContent(content);
+    socket.emit('save', { content: content });
 });
+
+function formatContent(content) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = content;
+    const items = tempDiv.querySelectorAll('p');
+
+    items.forEach(item => {
+        const priceMatch = item.textContent.match(/(S\/\.\d+(\.\d{2})?)/g);
+        if (priceMatch) {
+            priceMatch.forEach(price => {
+                const priceSpan = `<span class="price">${price}</span>`;
+                item.innerHTML = item.innerHTML.replace(price, priceSpan);
+            });
+            item.classList.add('menu-item');
+        } else {
+            item.classList.add('menu-item');
+        }
+
+        // Check for categories (in bold)
+        if (item.innerText === item.innerHTML.toUpperCase() && !item.querySelector('.price')) {
+            item.style.fontWeight = 'bold';
+            item.style.marginTop = '1em';
+            item.style.marginBottom = '0.5em';
+        }
+    });
+
+    return tempDiv.innerHTML;
+}

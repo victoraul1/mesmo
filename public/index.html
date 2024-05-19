@@ -45,19 +45,13 @@
     socket.on('contentUpdate', (data) => {
         const menuContent = document.getElementById('menu-content');
         menuContent.innerHTML = data.content;
-        wrapPrices();
+        formatContent();
     });
 
-    function wrapPrices() {
+    function formatContent() {
         const items = document.querySelectorAll('#menu-content p');
         items.forEach(item => {
-            const priceMatch = item.textContent.match(/(S\/\.\d+(\.\d{2})?)/);
-            if (priceMatch) {
-                const price = priceMatch[0];
-                const itemText = item.textContent.replace(price, '').trim();
-                item.innerHTML = `${itemText} <span class="price">${price}</span>`;
-                item.classList.add('menu-item');
-            } else {
+            if (item.querySelector('.price')) {
                 item.classList.add('menu-item');
             }
         });
