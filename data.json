@@ -1,3 +1,3 @@
 {
-    "content": "<div class=\"menu-item\"><span>Tamal (pollo)</span><span class=\"price\">S/.7.50</span></div><div class=\"menu-item\"><span>Humita</span><span class=\"price\">S/.8.00</span></div><div class=\"menu-item\"><span>Papa Rellena</span><span class=\"price\">S/.8.00</span></div>"
+    "content": "<p class='menu-item'>Tamal (pollo) <span class='price'>S/.7.50</span></p><p class='menu-item'>Humita <span class='price'>S/.8.00</span></p><p class='menu-item'>Papa Rellena <span class='price'>S/.8.00</span></p>"
 }
