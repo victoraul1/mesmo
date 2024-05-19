@@ -1,15 +1,7 @@
 const socket = io();
 
-const quill = new Quill('#editor', {
-    theme: 'snow'
-});
-
+// Recibir el contenido del menú desde el servidor
 socket.on('contentUpdate', (data) => {
-    quill.root.innerHTML = data.content;
-});
-
-const saveButton = document.getElementById('save-button');
-saveButton.addEventListener('click', () => {
-    const content = quill.root.innerHTML;
-    socket.emit('save', { content: content });
+    const menuContent = document.getElementById('menu-content');
+    menuContent.innerHTML = data.content;
 });

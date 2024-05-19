@@ -18,26 +18,20 @@ h1 {
     margin-bottom: 20px;
 }
 
-.menu-section {
-    margin-bottom: 20px;
+.quill-editor {
+    height: 400px;
 }
 
-.menu-section h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.menu-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
-.menu-item p {
-    margin: 0;
-}
-
-.menu-item .price {
-    text-align: right;
+th {
+    text-align: left;
 }
