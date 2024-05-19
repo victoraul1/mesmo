@@ -22,16 +22,22 @@ h1 {
     height: 400px;
 }
 
-table {
+/* Estilos para la tabla del menú */
+#menu-content table {
     width: 100%;
     border-collapse: collapse;
 }
 
-td, th {
+#menu-content td, #menu-content th {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-th {
+#menu-content th {
     text-align: left;
+}
+
+/* Estilo para alinear el precio a la derecha */
+.price {
+    text-align: right;
 }
