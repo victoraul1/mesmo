@@ -2,32 +2,39 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const fs = require('fs');
-const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const dataPath = path.join(__dirname, 'data.json');
+app.use(express.static('public'));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/admin.html', (req, res) => {
+    res.sendFile(__dirname + '/admin.html');
+});
 
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    fs.readFile(dataPath, 'utf8', (err, data) => {
+    // Enviar el contenido del menú cuando un cliente se conecta
+    fs.readFile('data.json', 'utf8', (err, data) => {
         if (err) {
-            console.error(err);
+            console.error('Error reading data.json:', err);
             return;
         }
         const menuData = JSON.parse(data);
         socket.emit('contentUpdate', menuData);
     });
 
+    // Guardar el contenido del menú cuando se recibe desde el admin panel
     socket.on('save', (data) => {
-        fs.writeFile(dataPath, JSON.stringify(data, null, 2), (err) => {
+        fs.writeFile('data.json', JSON.stringify(data), (err) => {
             if (err) {
-                console.error(err);
+                console.error('Error writing data.json:', err);
                 return;
             }
             io.emit('contentUpdate', data);
@@ -39,7 +46,5 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
-
+const port = 3000;
+server.listen(port, () => console.log(`Server running on port ${port}`));
