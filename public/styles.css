@@ -18,26 +18,21 @@ h1 {
     margin-bottom: 20px;
 }
 
-.quill-editor {
-    height: 400px;
+#menu-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-/* Estilos para la tabla del menú */
-#menu-content table {
+.menu-item {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
-#menu-content td, #menu-content th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#menu-content th {
-    text-align: left;
-}
-
-/* Estilo para alinear el precio a la derecha */
-.price {
+.menu-item .price {
     text-align: right;
 }
