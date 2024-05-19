@@ -3,13 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú del Restaurante</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .menu-section {
+            margin-bottom: 20px;
+        }
+        .menu-item {
+            margin-left: 20px;
+        }
+        .price {
+            float: right;
+        }
+    </style>
 </head>
 <body>
-    <div id="menu-container"></div>
+    <div id="menu"></div>
+
     <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('contentUpdate', (data) => {
+            const menuDiv = document.getElementById('menu');
+            menuDiv.innerHTML = '';
+
+            data.menu.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.classList.add('menu-section');
+
+                const sectionTitle = document.createElement('h2');
+                sectionTitle.textContent = section.categoria;
+                sectionDiv.appendChild(sectionTitle);
+
+                section.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('menu-item');
+                    
+                    const itemName = document.createElement('span');
+                    itemName.textContent = item.nombre;
+
+                    const itemPrice = document.createElement('span');
+                    itemPrice.classList.add('price');
+                    itemPrice.textContent = `S/.${item.precio}`;
+
+                    itemDiv.appendChild(itemName);
+                    itemDiv.appendChild(itemPrice);
+
+                    sectionDiv.appendChild(itemDiv);
+                });
+
+                menuDiv.appendChild(sectionDiv);
+            });
+        });
+
+        // Initial fetch
+        socket.emit('fetchContent');
+    </script>
 </body>
 </html>
-
