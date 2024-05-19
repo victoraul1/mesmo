@@ -13,89 +13,46 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+p {
+    margin: 0;
+    padding: 5px 0;
 }
 
 .menu-section {
     margin-bottom: 20px;
 }
 
-.menu-section input[type="text"] {
-    width: calc(100% - 100px);
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.menu-section h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .menu-item {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    padding: 5px 0;
 }
 
-.menu-item input[type="text"] {
-    flex: 1;
-    margin-right: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.menu-item p {
+    margin: 0;
 }
 
-.menu-item input[type="text"]:last-child {
-    margin-right: 0;
-}
-
-.menu-item .price {
-    width: 80px;
-}
-
-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 5px;
-    font-size: 14px;
-}
-
-button.delete {
-    background-color: #dc3545;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.add-item-btn,
-.add-category-btn {
-    background-color: #17a2b8;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.add-item-btn:hover,
-.add-category-btn:hover {
-    opacity: 0.9;
-}
-
-.add-item-btn:disabled,
-.add-category-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.menu-item span {
+    margin-left: 20px;
+    font-weight: bold;
 }
 
 .save-button {
@@ -113,25 +70,4 @@ button:disabled {
 
 .save-button:hover {
     opacity: 0.9;
-}
-
-.admin-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.admin-form {
-    flex: 3;
-}
-
-.admin-actions {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-left: 20px;
-}
-
-.admin-actions button {
-    margin-bottom: 10px;
 }

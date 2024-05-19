@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    // Load data.json and send it to the client
+    // Load content and send it to the client
     fs.readFile('./data.json', 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading data.json:', err);
@@ -23,14 +23,14 @@ io.on('connection', (socket) => {
         socket.emit('contentUpdate', menuData);
     });
 
-    socket.on('save', (updatedMenu) => {
-        fs.writeFile('./data.json', JSON.stringify(updatedMenu, null, 2), 'utf8', (err) => {
+    socket.on('save', (updatedContent) => {
+        fs.writeFile('./data.json', JSON.stringify(updatedContent, null, 2), 'utf8', (err) => {
             if (err) {
                 console.error('Error writing data.json:', err);
                 return;
             }
-            console.log('Menu data updated successfully');
-            io.emit('contentUpdate', updatedMenu); // Emit event to update content on all clients
+            console.log('Content updated successfully');
+            io.emit('contentUpdate', updatedContent);
         });
     });
 

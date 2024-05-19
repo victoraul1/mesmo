@@ -1,20 +1,3 @@
 {
-  "menu": [
-    {
-      "categoria": "DESAYUNOS",
-      "items": [
-        {"nombre": "Tamal (pollo)", "precio": "7.50"},
-        {"nombre": "Humita", "precio": "8.00"},
-        {"nombre": "Papa Rellena", "precio": "8.00"}
-      ]
-    },
-    {
-      "categoria": "SÁNDWICHES",
-      "items": [
-        {"nombre": "Pan con jamón", "precio": "14.50"},
-        {"nombre": "Pan con pavo", "precio": "13.50"},
-        {"nombre": "Pan con chicharrón", "precio": "15.00"}
-      ]
-    }
-  ]
+    "content": "<h2>DESAYUNOS</h2><p>Tamal (pollo) S/.7.50</p><p>Humita S/.8.00</p><p>Papa Rellena S/.8.00</p><h2>SÁNDWICHES</h2><p>Pan con jamón S/.14.50</p><p>Pan con pavo S/.13.50</p><p>Pan con chicharrón S/.15.00</p>"
 }
