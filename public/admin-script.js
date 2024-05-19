@@ -4,17 +4,9 @@ const quill = new Quill('#editor', {
     theme: 'snow',
     modules: {
         toolbar: {
-            container: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['link', 'image'],
-                [{ 'align': [] }],
-                ['clean'],
-                ['html']  // Custom button for HTML editing
-            ],
+            container: "#toolbar",
             handlers: {
-                'html': showHtmlEditor
+                'code': showHtmlEditor  // Custom button handler
             }
         }
     }
@@ -53,4 +45,3 @@ function showHtmlEditor() {
         }
     };
 }
- 
