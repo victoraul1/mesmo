@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
         }
         const menuData = JSON.parse(data);
         socket.emit('contentUpdate', menuData);
-    }); 
+    });
 
     socket.on('save', (updatedContent) => {
         fs.writeFile('./data.json', JSON.stringify(updatedContent, null, 2), 'utf8', (err) => {
