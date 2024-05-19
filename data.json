@@ -1,3 +1,3 @@
 {
-    "content": "<h2>DESAYUNOS</h2><p>Tamal (pollo) S/.7.50</p><p>Humita S/.8.00</p><p>Papa Rellena S/.8.00</p><h2>SÁNDWICHES</h2><p>Pan con jamón S/.14.50</p><p>Pan con pavo S/.13.50</p><p>Pan con chicharrón S/.15.00</p>"
+    "content": "<div class='menu-section'><h2>DESAYUNOS</h2><div class='menu-item'><p>Tamal (pollo)</p><p class='price'>S/.7.50</p></div><div class='menu-item'><p>Humita</p><p class='price'>S/.8.00</p></div><div class='menu-item'><p>Papa Rellena</p><p class='price'>S/.8.00</p></div></div><div class='menu-section'><h2>SÁNDWICHES</h2><div class='menu-item'><p>Pan con jamón</p><p class='price'>S/.14.50</p></div><div class='menu-item'><p>Pan con pavo</p><p class='price'>S/.13.50</p></div><div class='menu-item'><p>Pan con chicharrón</p><p class='price'>S/.15.00</p></div></div>"
 }
