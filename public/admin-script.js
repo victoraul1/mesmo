@@ -6,7 +6,7 @@ const quill = new Quill('#editor', {
 
 // Función para cargar el contenido del menú en Quill
 function loadMenuContent(content) {
-    quill.root.innerHTML = content;
+    quill.clipboard.dangerouslyPasteHTML(content);
 }
 
 // Recibir el contenido del menú desde el servidor
