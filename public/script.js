@@ -36,3 +36,4 @@ function displayMenu(menuData) {
 socket.on('contentUpdate', (data) => {
     displayMenu(data.menu);
 });
+ 

@@ -18,3 +18,4 @@ saveButton.addEventListener('click', () => {
     const content = quill.root.innerHTML;
     socket.emit('save', { content });
 });
+ 
