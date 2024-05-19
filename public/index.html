@@ -22,9 +22,9 @@
 
             lines.forEach(line => {
                 if (line.trim().startsWith('S/')) {
-                    processedContent += `<span class="price">${line}</span>`;
+                    processedContent += `<div class="menu-item"><span></span><span class="price">${line}</span></div>`;
                 } else {
-                    processedContent += `<span class="item">${line}</span>`;
+                    processedContent += `<div class="menu-item"><span class="item">${line}</span><span></span></div>`;
                 }
             });
 

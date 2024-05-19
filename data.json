@@ -1,3 +1,3 @@
 {
-    "content": "<p>Tu contenido del menú aquí</p>"
+    "content": "<div class=\"menu-item\"><span>Tamal (pollo)</span><span class=\"price\">S/.7.50</span></div><div class=\"menu-item\"><span>Humita</span><span class=\"price\">S/.8.00</span></div><div class=\"menu-item\"><span>Papa Rellena</span><span class=\"price\">S/.8.00</span></div>"
 }
