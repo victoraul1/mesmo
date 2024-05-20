@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 [{ 'header': [1, 2, false] }],
                 ['bold', 'italic', 'underline'],
                 ['link', 'image'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['clean'],
                 ['html'] // Añade esta línea para el botón de edición HTML
             ]
