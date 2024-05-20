@@ -8,37 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['link', 'image'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['clean'],
-                ['html'] // Añade esta línea para el botón HTML
+                [{ 'html': true }] // Añade esta línea para el botón HTML
             ]
         }
     });
-
-    // Escapar y desescapar funciones
-    function escapeHtml(text) {
-        return text.replace(/[&<>"']/g, (match) => {
-            const escape = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#39;'
-            };
-            return escape[match];
-        });
-    }
-
-    function unescapeHtml(text) {
-        return text.replace(/&amp;|&lt;|&gt;|&quot;|&#39;/g, (match) => {
-            const unescape = {
-                '&amp;': '&',
-                '&lt;': '<',
-                '&gt;': '>',
-                '&quot;': '"',
-                '&#39;': "'"
-            };
-            return unescape[match];
-        });
-    }
 
     // Añade la funcionalidad del botón HTML
     const customHtmlButton = document.querySelector('.ql-html');
@@ -46,13 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('htmlModal');
         const htmlEditor = document.getElementById('htmlEditor');
         modal.style.display = 'block';
-        htmlEditor.value = escapeHtml(editor.root.innerHTML);
+        htmlEditor.value = editor.root.innerHTML;
     });
 
     const saveHtmlButton = document.getElementById('save-html');
     saveHtmlButton.addEventListener('click', () => {
         const htmlEditor = document.getElementById('htmlEditor');
-        editor.root.innerHTML = unescapeHtml(htmlEditor.value);
+        editor.root.innerHTML = htmlEditor.value;
         const modal = document.getElementById('htmlModal');
         modal.style.display = 'none';
     });
@@ -80,6 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Recibir contenido del servidor y cargarlo en el editor
     socket.on('load', (data) => {
-        editor.root.innerHTML = unescapeHtml(data);
+        editor.root.innerHTML = data;
     });
 });
