@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const quill = new Quill('#editor-container', {
+    const editor = new Quill('#editor-container', {
         theme: 'snow',
         modules: {
             toolbar: [
@@ -8,54 +8,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['link', 'image'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['clean'],
-                ['html'] // Añade esta línea para el botón HTML personalizado
+                ['code-block'],  // Include the code-block button if you need it.
+                ['html']         // Custom HTML button
             ]
         },
         formats: {
-            // Añade todas las etiquetas HTML que necesitas aquí
+            'header': true,
             'bold': true,
             'italic': true,
             'underline': true,
             'link': true,
             'image': true,
             'list': true,
-            'header': true,
+            'bullet': true,
             'code-block': true,
-            // Permitir etiquetas HTML personalizadas
-            'table': true,
-            'td': true,
-            'th': true,
-            'tr': true,
-            'tbody': true,
-            'thead': true
+            'html': true  // Ensure the custom format is recognized
         }
     });
 
-    // Añade la funcionalidad del botón HTML
-    const customButton = document.querySelector('.ql-html');
-    customButton.addEventListener('click', () => {
+    // Function to open the custom HTML modal
+    const openHtmlModal = () => {
         const modal = document.getElementById('htmlModal');
         const htmlEditor = document.getElementById('htmlEditor');
         modal.style.display = 'block';
-        htmlEditor.value = quill.root.innerHTML;
-    });
+        htmlEditor.value = editor.root.innerHTML;
+    };
 
-    const saveHtmlButton = document.getElementById('save-html');
-    saveHtmlButton.addEventListener('click', () => {
+    // Function to save HTML content from the modal
+    const saveHtmlContent = () => {
         const htmlEditor = document.getElementById('htmlEditor');
-        quill.root.innerHTML = htmlEditor.value;
-        const modal = document.getElementById('htmlModal');
-        modal.style.display = 'none';
-    });
+        editor.root.innerHTML = htmlEditor.value;
+        document.getElementById('htmlModal').style.display = 'none';
+    };
 
-    // Cierra el modal cuando se hace clic en la "X"
-    const closeModalButton = document.querySelector('.close');
-    closeModalButton.addEventListener('click', () => {
-        const modal = document.getElementById('htmlModal');
-        modal.style.display = 'none';
-    });
+    // Event listeners for the custom HTML button and modal save button
+    document.querySelector('.ql-html').addEventListener('click', openHtmlModal);
+    document.getElementById('save-html').addEventListener('click', saveHtmlContent);
 
-    // Cierra el modal cuando se hace clic fuera del contenido del modal
+    // Close the modal when clicking outside of it
     window.addEventListener('click', (event) => {
         const modal = document.getElementById('htmlModal');
         if (event.target === modal) {
@@ -63,13 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Guardar contenido
+    // Save button functionality to send the content to the server
     document.getElementById('save-button').addEventListener('click', () => {
-        const content = quill.root.innerHTML;
-        socket.emit('save', content);
+        const content = editor.root.innerHTML;
+        socket.emit('save', { content });
     });
 
+    // Load initial content from the server
     socket.on('contentUpdate', (data) => {
-        quill.root.innerHTML = data.content;
+        editor.root.innerHTML = data.content;
     });
 });
