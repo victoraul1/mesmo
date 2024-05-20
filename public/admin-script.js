@@ -10,7 +10,6 @@ const quill = new Quill('#editor', {
             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
             [{ 'align': [] }],
             ['clean'],
-            ['code-block'],
             ['html'] // Agregar botón HTML
         ]
     }
