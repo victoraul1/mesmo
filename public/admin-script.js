@@ -6,34 +6,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 [{ 'header': [1, 2, false] }],
                 ['bold', 'italic', 'underline'],
                 ['link', 'image'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 ['clean'],
-                ['html'] // Añade esta línea para el botón de edición HTML
+                ['html'] // Añade esta línea para permitir el botón de HTML
             ]
         }
     });
 
-    // Añadir la funcionalidad del botón HTML
-    quill.getModule('toolbar').addHandler('html', function() {
-        const htmlModal = document.getElementById('htmlModal');
+    // Añade la funcionalidad del botón HTML
+    const customButton = document.querySelector('.ql-html');
+    customButton.addEventListener('click', () => {
+        const modal = document.getElementById('htmlModal');
         const htmlEditor = document.getElementById('htmlEditor');
-        htmlModal.style.display = 'block';
+        modal.style.display = 'block';
         htmlEditor.value = quill.root.innerHTML;
+    });
 
-        document.getElementById('save-html').addEventListener('click', () => {
-            quill.root.innerHTML = htmlEditor.value;
-            htmlModal.style.display = 'none';
-        });
+    const saveHtmlButton = document.getElementById('save-html');
+    saveHtmlButton.addEventListener('click', () => {
+        const htmlEditor = document.getElementById('htmlEditor');
+        quill.root.innerHTML = htmlEditor.value;
+        const modal = document.getElementById('htmlModal');
+        modal.style.display = 'none';
+    });
 
-        document.querySelector('.close').addEventListener('click', () => {
-            htmlModal.style.display = 'none';
-        });
+    const closeModalButton = document.querySelector('.close');
+    closeModalButton.addEventListener('click', () => {
+        const modal = document.getElementById('htmlModal');
+        modal.style.display = 'none';
+    });
 
-        window.addEventListener('click', (event) => {
-            if (event.target === htmlModal) {
-                htmlModal.style.display = 'none';
-            }
-        });
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('htmlModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     });
 
     // Guardar contenido
