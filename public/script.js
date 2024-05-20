@@ -1,7 +1,7 @@
-const socket = io();
+document.addEventListener('DOMContentLoaded', () => {
+  const socket = io();
 
-// Recibir el contenido del menú desde el servidor
-socket.on('contentUpdate', (data) => {
-    const menuContent = document.getElementById('menu-content');
-    menuContent.innerHTML = data.content;
+  socket.on('load', (data) => {
+    document.getElementById('menu-content').innerHTML = data;
+  });
 });

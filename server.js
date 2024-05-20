@@ -8,31 +8,20 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const dataFilePath = path.join(__dirname, 'data.json');
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static('public'));
+let content = '';
 
 io.on('connection', (socket) => {
-    console.log('Nuevo cliente conectado');
+  socket.emit('load', content);
 
-    socket.on('save', (content) => {
-        fs.writeFileSync(dataFilePath, JSON.stringify({ content }), 'utf8');
-        io.emit('update', content);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Cliente desconectado');
-    });
+  socket.on('save', (data) => {
+    content = data;
+    fs.writeFileSync(path.join(__dirname, 'public', 'data.json'), JSON.stringify({ content }), 'utf8');
+  });
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-server.listen(3000, () => {
-    console.log('Servidor corriendo en http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
