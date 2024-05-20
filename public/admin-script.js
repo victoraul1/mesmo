@@ -1,8 +1,3 @@
-import Quill from 'quill';
-import { htmlEditButton } from 'quill-html-edit-button';
-
-Quill.register('modules/htmlEditButton', htmlEditButton);
-
 document.addEventListener('DOMContentLoaded', () => {
   const quill = new Quill('#editor-container', {
     theme: 'snow',
@@ -14,8 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['clean'],
         ['html'] // Añade esta línea para permitir el botón HTML
-      ],
-      htmlEditButton: {} // Añade el módulo htmlEditButton
+      ]
     },
     formats: ['bold', 'italic', 'underline', 'link', 'image', 'list', 'header', 'html']
   });
@@ -55,6 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Guardar contenido
   document.getElementById('save-button').addEventListener('click', () => {
     const content = quill.root.innerHTML;
-    socket.emit('save', content);
+    // Asegúrate de que socket esté definido
+    if (typeof socket !== 'undefined') {
+      socket.emit('save', content);
+    } else {
+      console.error('socket is not defined');
+    }
   });
 });
