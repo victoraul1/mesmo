@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const editor = new Quill('#editor-container', {
+    const quill = new Quill('#editor-container', {
         theme: 'snow',
         modules: {
             toolbar: [
@@ -8,53 +8,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['link', 'image'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['clean'],
-                ['code-block'] // Añade esta línea para permitir el bloque de código
+                ['html'] // Añade esta línea para el botón HTML personalizado
             ]
-        },
-        formats: {
-            // Añade todas las etiquetas HTML que necesitas aquí
-            'bold': true,
-            'italic': true,
-            'underline': true,
-            'link': true,
-            'image': true,
-            'list': true,
-            'bullet': true,
-            'header': true,
-            'code-block': true
         }
     });
 
-    const htmlModal = document.getElementById('htmlModal');
-    const htmlInput = document.getElementById('html-input');
-    const guardarHtmlBtn = document.getElementById('guardar-html');
-    const guardarHtmlContentBtn = document.getElementById('guardar-html-content');
-    const spanClose = document.getElementsByClassName('close')[0];
-
-    guardarHtmlBtn.addEventListener('click', () => {
-        const html = editor.root.innerHTML;
-        localStorage.setItem('editorContent', html);
-        alert('Contenido guardado');
+    // Añade la funcionalidad del botón HTML
+    const customButton = document.querySelector('.ql-html');
+    customButton.addEventListener('click', () => {
+        const modal = document.getElementById('htmlModal');
+        const htmlEditor = document.getElementById('htmlEditor');
+        modal.style.display = 'block';
+        htmlEditor.value = quill.root.innerHTML;
     });
 
-    document.querySelector('#htmlModal .close').onclick = function() {
-        htmlModal.style.display = 'none';
-    };
-
-    document.getElementById('html-btn').onclick = function() {
-        htmlInput.value = editor.root.innerHTML;
-        htmlModal.style.display = 'block';
-    };
-
-    guardarHtmlContentBtn.addEventListener('click', () => {
-        const html = htmlInput.value;
-        editor.root.innerHTML = html;
-        htmlModal.style.display = 'none';
+    const saveHtmlButton = document.getElementById('save-html');
+    saveHtmlButton.addEventListener('click', () => {
+        const htmlEditor = document.getElementById('htmlEditor');
+        quill.root.innerHTML = htmlEditor.value;
+        const modal = document.getElementById('htmlModal');
+        modal.style.display = 'none';
     });
 
-    // Cargar el contenido guardado si existe
-    const savedContent = localStorage.getItem('editorContent');
-    if (savedContent) {
-        editor.root.innerHTML = savedContent;
-    }
+    // Cierra el modal cuando se hace clic en la "X"
+    const closeModalButton = document.querySelector('.close');
+    closeModalButton.addEventListener('click', () => {
+        const modal = document.getElementById('htmlModal');
+        modal.style.display = 'none';
+    });
+
+    // Cierra el modal cuando se hace clic fuera del contenido del modal
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('htmlModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Guardar contenido
+    document.getElementById('save-button').addEventListener('click', () => {
+        const content = quill.root.innerHTML;
+        socket.emit('save', content);
+    });
+
+    socket.on('contentUpdate', (data) => {
+        quill.root.innerHTML = data.content;
+    });
 });
