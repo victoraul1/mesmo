@@ -2,26 +2,41 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const fs = require('fs');
-const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
-
-let content = '';
+app.use(express.static('public'));
 
 io.on('connection', (socket) => {
-  socket.emit('load', content);
+  console.log('New client connected');
 
-  socket.on('save', (data) => {
-    content = data;
-    fs.writeFileSync(path.join(__dirname, 'public', 'data.json'), JSON.stringify({ content }), 'utf8');
+  // Emitir el contenido al nuevo cliente
+  fs.readFile('data.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    socket.emit('load', data);
+  });
+
+  // Guardar el contenido y emitir una actualización
+  socket.on('save', (content) => {
+    fs.writeFile('data.json', content, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      io.emit('update', content); // Emitir el evento de actualización
+    });
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
   });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(3000, () => {
+  console.log('Listening on port 3000');
 });

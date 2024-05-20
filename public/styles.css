@@ -1,13 +1,23 @@
-body {
-  font-family: Arial, sans-serif;
+#menu-content {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
 }
 
-.container {
-  width: 80%;
-  margin: auto;
-  padding: 20px;
+#menu-content div {
+  padding: 10px;
 }
 
-#editor-container {
-  height: 500px;
+#menu-content .item {
+  display: flex;
+  justify-content: space-between;
+}
+
+#menu-content .item span:first-child {
+  flex: 1;
+}
+
+#menu-content .item span:last-child {
+  flex: 0 0 auto;
+  text-align: right;
 }
