@@ -14,15 +14,24 @@ const quill = new Quill('#editor', {
   }
 });
 
-// Añadir botón personalizado para editar HTML
+// Añadir botón personalizado para abrir la ventana modal de HTML
 const customButton = document.querySelector('.ql-custom-html');
-customButton.innerHTML = '<i class="ql-html">HTML</i>';
+customButton.innerHTML = 'HTML';
 customButton.addEventListener('click', () => {
-  const currentHtml = quill.root.innerHTML;
-  const newHtml = prompt('Edit HTML', currentHtml);
-  if (newHtml !== null) {
-    quill.root.innerHTML = newHtml;
-  }
+  document.getElementById('html-modal').style.display = 'block';
+  document.getElementById('html-content').value = quill.root.innerHTML;
+});
+
+// Cerrar la ventana modal de HTML
+document.getElementById('close-modal').addEventListener('click', () => {
+  document.getElementById('html-modal').style.display = 'none';
+});
+
+// Guardar el contenido de la ventana modal de HTML
+document.getElementById('save-html').addEventListener('click', () => {
+  const newHtml = document.getElementById('html-content').value;
+  quill.root.innerHTML = newHtml;
+  document.getElementById('html-modal').style.display = 'none';
 });
 
 // Función para cargar el contenido del menú en Quill
