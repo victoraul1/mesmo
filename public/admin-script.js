@@ -8,9 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['link', 'image'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['clean'],
-                ['code-block'],  // Include the code-block button if you need it.
-                ['html']         // Custom HTML button
-            ]
+                ['html']  // Botón HTML personalizado
+            ],
+            clipboard: {
+                matchVisual: false  // Permitir todo el HTML
+            }
         },
         formats: {
             'header': true,
@@ -21,12 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'image': true,
             'list': true,
             'bullet': true,
-            'code-block': true,
-            'html': true  // Ensure the custom format is recognized
+            'html': true  // Asegurar que el formato personalizado sea reconocido
         }
     });
 
-    // Function to open the custom HTML modal
+    // Función para abrir el modal de HTML personalizado
     const openHtmlModal = () => {
         const modal = document.getElementById('htmlModal');
         const htmlEditor = document.getElementById('htmlEditor');
@@ -34,18 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
         htmlEditor.value = editor.root.innerHTML;
     };
 
-    // Function to save HTML content from the modal
+    // Función para guardar el contenido HTML desde el modal
     const saveHtmlContent = () => {
         const htmlEditor = document.getElementById('htmlEditor');
         editor.root.innerHTML = htmlEditor.value;
         document.getElementById('htmlModal').style.display = 'none';
     };
 
-    // Event listeners for the custom HTML button and modal save button
+    // Event listeners para el botón HTML personalizado y el botón de guardar del modal
     document.querySelector('.ql-html').addEventListener('click', openHtmlModal);
     document.getElementById('save-html').addEventListener('click', saveHtmlContent);
 
-    // Close the modal when clicking outside of it
+    // Cerrar el modal cuando se haga clic fuera de él
     window.addEventListener('click', (event) => {
         const modal = document.getElementById('htmlModal');
         if (event.target === modal) {
@@ -53,13 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Save button functionality to send the content to the server
+    // Funcionalidad del botón Guardar para enviar el contenido al servidor
     document.getElementById('save-button').addEventListener('click', () => {
         const content = editor.root.innerHTML;
         socket.emit('save', { content });
     });
 
-    // Load initial content from the server
+    // Cargar contenido inicial desde el servidor
     socket.on('contentUpdate', (data) => {
         editor.root.innerHTML = data.content;
     });
