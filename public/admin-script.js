@@ -8,45 +8,63 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['link', 'image'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['clean'],
-                ['html']  // Botón HTML personalizado
-            ],
-            clipboard: {
-                matchVisual: false  // Permitir todo el HTML
-            }
-        },
-        formats: {
-            'header': true,
-            'bold': true,
-            'italic': true,
-            'underline': true,
-            'link': true,
-            'image': true,
-            'list': true,
-            'bullet': true,
-            'html': true  // Asegurar que el formato personalizado sea reconocido
+                ['html'] // Añade esta línea para el botón HTML
+            ]
         }
     });
 
-    // Función para abrir el modal de HTML personalizado
-    const openHtmlModal = () => {
+    // Escapar y desescapar funciones
+    function escapeHtml(text) {
+        return text.replace(/[&<>"']/g, (match) => {
+            const escape = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+            return escape[match];
+        });
+    }
+
+    function unescapeHtml(text) {
+        return text.replace(/&amp;|&lt;|&gt;|&quot;|&#39;/g, (match) => {
+            const unescape = {
+                '&amp;': '&',
+                '&lt;': '<',
+                '&gt;': '>',
+                '&quot;': '"',
+                '&#39;': "'"
+            };
+            return unescape[match];
+        });
+    }
+
+    // Añade la funcionalidad del botón HTML
+    const customHtmlButton = document.querySelector('.ql-html');
+    customHtmlButton.addEventListener('click', () => {
         const modal = document.getElementById('htmlModal');
         const htmlEditor = document.getElementById('htmlEditor');
         modal.style.display = 'block';
-        htmlEditor.value = editor.root.innerHTML;
-    };
+        htmlEditor.value = escapeHtml(editor.root.innerHTML);
+    });
 
-    // Función para guardar el contenido HTML desde el modal
-    const saveHtmlContent = () => {
+    const saveHtmlButton = document.getElementById('save-html');
+    saveHtmlButton.addEventListener('click', () => {
         const htmlEditor = document.getElementById('htmlEditor');
-        editor.root.innerHTML = htmlEditor.value;
-        document.getElementById('htmlModal').style.display = 'none';
-    };
+        editor.root.innerHTML = unescapeHtml(htmlEditor.value);
+        const modal = document.getElementById('htmlModal');
+        modal.style.display = 'none';
+    });
 
-    // Event listeners para el botón HTML personalizado y el botón de guardar del modal
-    document.querySelector('.ql-html').addEventListener('click', openHtmlModal);
-    document.getElementById('save-html').addEventListener('click', saveHtmlContent);
+    // Cierra el modal cuando se hace clic en la "x"
+    const closeModalButton = document.querySelector('.close');
+    closeModalButton.addEventListener('click', () => {
+        const modal = document.getElementById('htmlModal');
+        modal.style.display = 'none';
+    });
 
-    // Cerrar el modal cuando se haga clic fuera de él
+    // Cierra el modal cuando se hace clic fuera del modal
     window.addEventListener('click', (event) => {
         const modal = document.getElementById('htmlModal');
         if (event.target === modal) {
@@ -54,14 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Funcionalidad del botón Guardar para enviar el contenido al servidor
+    // Guardar contenido
     document.getElementById('save-button').addEventListener('click', () => {
         const content = editor.root.innerHTML;
-        socket.emit('save', { content });
+        socket.emit('save', content);
     });
 
-    // Cargar contenido inicial desde el servidor
-    socket.on('contentUpdate', (data) => {
-        editor.root.innerHTML = data.content;
+    // Recibir contenido del servidor y cargarlo en el editor
+    socket.on('load', (data) => {
+        editor.root.innerHTML = unescapeHtml(data);
     });
 });
