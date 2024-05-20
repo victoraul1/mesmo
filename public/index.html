@@ -12,6 +12,9 @@
     <div id="menu-content"></div>
   </div>
   <script>
+    const content = JSON.parse(fs.readFileSync(dataFilePath, 'utf8')).content;
+res.send(content);
+
     fetch('/data')
       .then(response => response.json())
       .then(data => {
