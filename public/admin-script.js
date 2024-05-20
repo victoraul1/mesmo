@@ -8,7 +8,8 @@ const quill = new Quill('#editor', {
       ['bold', 'italic', 'underline'],
       ['link', 'image'],
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      ['code-block'] // Opción para código HTML
+      ['code-block'], // Opción para código HTML
+      [{ 'code': true }] // Añadir opción para editar HTML
     ]
   }
 });
