@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú</title>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <title>Menú 2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,39 +22,39 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+        .menu-content table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .price {
-            margin-left: auto;
+        .menu-content th, .menu-content td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .menu-content th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        .menu-content tr:hover {
+            background-color: #f1f1f1;
+        }
+        .menu-content td.price {
+            text-align: right;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Menú 2</h1>
-    <div id="menu-content"></div>
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    const socket = io();
+    <div class="container">
+        <h1>Menú 2</h1>
+        <div class="menu-content" id="menu-content"></div>
+    </div>
 
-    socket.on('contentUpdate', (data) => {
-        const menuContent = document.getElementById('menu-content');
-        menuContent.innerHTML = data.content;
-        formatContent();
-    });
-
-    function formatContent() {
-        const items = document.querySelectorAll('#menu-content p');
-        items.forEach(item => {
-            if (item.querySelector('.price')) {
-                item.classList.add('menu-item');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const content = localStorage.getItem('editorContent');
+            if (content) {
+                document.getElementById('menu-content').innerHTML = content;
             }
         });
-    }
-</script>
+    </script>
 </body>
 </html>

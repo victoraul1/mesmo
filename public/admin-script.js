@@ -1,68 +1,60 @@
-const socket = io();
+document.addEventListener('DOMContentLoaded', () => {
+    const editor = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                ['link', 'image'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['clean'],
+                ['code-block'] // Añade esta línea para permitir el bloque de código
+            ]
+        },
+        formats: {
+            // Añade todas las etiquetas HTML que necesitas aquí
+            'bold': true,
+            'italic': true,
+            'underline': true,
+            'link': true,
+            'image': true,
+            'list': true,
+            'bullet': true,
+            'header': true,
+            'code-block': true
+        }
+    });
 
-const quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-        toolbar: [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline'],
-            ['link', 'image'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            ['clean'],
-            ['html'] // Agregar botón HTML
-        ]
+    const htmlModal = document.getElementById('htmlModal');
+    const htmlInput = document.getElementById('html-input');
+    const guardarHtmlBtn = document.getElementById('guardar-html');
+    const guardarHtmlContentBtn = document.getElementById('guardar-html-content');
+    const spanClose = document.getElementsByClassName('close')[0];
+
+    guardarHtmlBtn.addEventListener('click', () => {
+        const html = editor.root.innerHTML;
+        localStorage.setItem('editorContent', html);
+        alert('Contenido guardado');
+    });
+
+    document.querySelector('#htmlModal .close').onclick = function() {
+        htmlModal.style.display = 'none';
+    };
+
+    document.getElementById('html-btn').onclick = function() {
+        htmlInput.value = editor.root.innerHTML;
+        htmlModal.style.display = 'block';
+    };
+
+    guardarHtmlContentBtn.addEventListener('click', () => {
+        const html = htmlInput.value;
+        editor.root.innerHTML = html;
+        htmlModal.style.display = 'none';
+    });
+
+    // Cargar el contenido guardado si existe
+    const savedContent = localStorage.getItem('editorContent');
+    if (savedContent) {
+        editor.root.innerHTML = savedContent;
     }
-});
-
-// Función para abrir la ventana modal de edición HTML
-function showHtmlEditor() {
-    const htmlEditor = document.getElementById('htmlEditorModal');
-    const htmlContent = quill.root.innerHTML;
-    document.getElementById('htmlEditorContent').value = htmlContent;
-    htmlEditor.style.display = 'block';
-}
-
-// Función para guardar el contenido HTML desde la ventana modal
-function saveHtmlContent() {
-    const htmlContent = document.getElementById('htmlEditorContent').value;
-    quill.clipboard.dangerouslyPasteHTML(htmlContent);
-    document.getElementById('htmlEditorModal').style.display = 'none';
-}
-
-// Cerrar la ventana modal de edición HTML
-function closeHtmlEditor() {
-    document.getElementById('htmlEditorModal').style.display = 'none';
-}
-
-// Botón para abrir la ventana de edición HTML
-const htmlButton = document.querySelector('.ql-html');
-htmlButton.addEventListener('click', showHtmlEditor);
-
-// Botón para guardar el contenido HTML desde la ventana modal
-const saveHtmlButton = document.getElementById('saveHtmlButton');
-saveHtmlButton.addEventListener('click', saveHtmlContent);
-
-// Botón para cerrar la ventana modal de edición HTML
-const closeHtmlButton = document.getElementById('closeHtmlButton');
-closeHtmlButton.addEventListener('click', closeHtmlEditor);
-
-// Recibir el contenido del menú desde el servidor
-socket.on('contentUpdate', (data) => {
-    loadMenuContent(data.content);
-});
-
-// Función para cargar el contenido del menú en Quill
-function loadMenuContent(content) {
-    quill.clipboard.dangerouslyPasteHTML(content);
-}
-
-// Guardar el contenido del menú cuando se hace clic en "Guardar Cambios"
-document.getElementById('save-button').addEventListener('click', () => {
-    const content = quill.root.innerHTML;
-    socket.emit('save', { content });
-});
-
-socket.on('save', (data) => {
-    alert('Contenido guardado correctamente.');
 });
