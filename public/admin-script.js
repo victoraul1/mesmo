@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const socket = io();  // Asegúrate de que esta línea esté presente
   const quill = new Quill('#editor-container', {
     theme: 'snow',
     modules: {
