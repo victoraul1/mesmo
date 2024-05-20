@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Añadir la funcionalidad del botón HTML
-    const htmlEditButton = Quill.import('modules/htmlEditButton');
     quill.getModule('toolbar').addHandler('html', function() {
         const htmlModal = document.getElementById('htmlModal');
         const htmlEditor = document.getElementById('htmlEditor');
