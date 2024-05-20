@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const socket = io();  
+  const socket = io();
+
   const quill = new Quill('#editor-container', {
     theme: 'snow',
     modules: {
@@ -14,11 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     formats: ['bold', 'italic', 'underline', 'link', 'image', 'list', 'header']
   });
 
-  // Guardar contenido
+  socket.on('load', (data) => {
+    quill.root.innerHTML = data;
+  });
+
   document.getElementById('save-button').addEventListener('click', () => {
     const content = quill.root.innerHTML;
     socket.emit('save', content);
-    // Eliminar la siguiente línea para no mostrar el alert
-    // alert("Contenido guardado correctamente.");
+  });
+
+  // Emitir el contenido cargado cuando se conecta un cliente nuevo
+  socket.on('connect', () => {
+    socket.emit('load');
+  });
+
+  socket.on('update', (data) => {
+    quill.root.innerHTML = data;
   });
 });

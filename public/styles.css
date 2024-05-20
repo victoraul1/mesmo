@@ -1,3 +1,7 @@
+#editor-container {
+  height: 500px;
+}
+
 #menu-content {
   display: grid;
   grid-template-columns: auto auto;
@@ -18,6 +22,27 @@
 }
 
 #menu-content .item span:last-child {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+/* Estilos adicionales para admin.html */
+.ql-editor {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+}
+
+.ql-editor .item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ql-editor .item span:first-child {
+  flex: 1;
+}
+
+.ql-editor .item span:last-child {
   flex: 0 0 auto;
   text-align: right;
 }
