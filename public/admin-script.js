@@ -8,9 +8,20 @@ const quill = new Quill('#editor', {
       ['bold', 'italic', 'underline'],
       ['link', 'image'],
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      ['code-block'], // Opción para código HTML
-      [{ 'code': true }] // Añadir opción para editar HTML
+      ['code-block'],
+      ['custom-html'] // Añadir un botón personalizado para HTML
     ]
+  }
+});
+
+// Añadir botón personalizado para editar HTML
+const customButton = document.querySelector('.ql-custom-html');
+customButton.innerHTML = '<i class="ql-html">HTML</i>';
+customButton.addEventListener('click', () => {
+  const currentHtml = quill.root.innerHTML;
+  const newHtml = prompt('Edit HTML', currentHtml);
+  if (newHtml !== null) {
+    quill.root.innerHTML = newHtml;
   }
 });
 
