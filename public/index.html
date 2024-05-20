@@ -1,60 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú 2</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .menu-content table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .menu-content th, .menu-content td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        .menu-content th {
-            background-color: #f2f2f2;
-            text-align: left;
-        }
-        .menu-content tr:hover {
-            background-color: #f1f1f1;
-        }
-        .menu-content td.price {
-            text-align: right;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú 2</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Menú 2</h1>
-        <div class="menu-content" id="menu-content"></div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const content = localStorage.getItem('editorContent');
-            if (content) {
-                document.getElementById('menu-content').innerHTML = content;
-            }
-        });
-    </script>
+  <div class="container">
+    <h1>Menú 2</h1>
+    <div id="menu-content"></div>
+  </div>
+  <script>
+    fetch('/data')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('menu-content').innerHTML = data.content;
+      })
+      .catch(error => console.error('Error al cargar el contenido:', error));
+  </script>
 </body>
 </html>
