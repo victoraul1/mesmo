@@ -16,6 +16,28 @@ body {
     border-radius: 8px;
 }
 
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif;
+    color: #222;
+}
+
 
 #editor-container {
   height: 500px;
