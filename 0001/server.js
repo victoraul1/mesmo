@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    fs.readFile(path.join(__dirname, 'data_0001.json'), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, 'data.json'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return;
@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('save', (content) => {
-        fs.writeFile(path.join(__dirname, 'data_0001.json'), content, (err) => {
+        fs.writeFile(path.join(__dirname, 'data.json'), content, (err) => {
             if (err) {
                 console.error(err);
                 return;
