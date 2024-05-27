@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io(); // Asegúrate de que apunte al puerto correcto
+    const socket = io();
 
     const quill = new Quill('#editor-container', {
         theme: 'snow',
