@@ -1,13 +1,14 @@
 {
   "name": "mesmo",
   "version": "1.0.0",
-  "description": "Proyecto demo para administración de contenido en tiempo real",
+  "description": "Gestión de menús para restaurantes",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start-0001": "node 0001/server.js",
+    "start-0002": "node 0002/server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^4.1.2"
+    "socket.io": "^4.0.0"
   }
 }
