@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io('http://localhost:3001');
+    const socket = io('http://localhost:3001'); // Asegúrate de que apunte al puerto correcto
 
     const quill = new Quill('#editor-container', {
         theme: 'snow',
