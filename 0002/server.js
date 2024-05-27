@@ -9,17 +9,16 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Configuración de autenticación básica solo para admin.html
-app.use('/admin.html', basicAuth({
+// Configuración de autenticación básica solo para /admin.html
+app.get('/admin.html', basicAuth({
     users: { 'admin': 'password' }, // Reemplaza 'admin' y 'password' con el usuario y contraseña que prefieras
     challenge: true
-}));
-
-app.get('/admin.html', (req, res) => {
+}), (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
+
+// Rutas para archivos estáticos y para index.html
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
