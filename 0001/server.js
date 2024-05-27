@@ -10,24 +10,24 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 // Configuración de autenticación básica solo para /admin.html
-app.get('/0001/admin.html', basicAuth({
+app.get('/admin.html', basicAuth({
     users: { 'admin': 'password' }, // Reemplaza 'admin' y 'password' con el usuario y contraseña que prefieras
     challenge: true
 }), (req, res) => {
-    res.sendFile(path.join(__dirname, '0001', 'public', 'admin.html'));
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Rutas para archivos estáticos y para index.html
-app.use('/0001', express.static(path.join(__dirname, '0001', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/0001', (req, res) => {
-    res.sendFile(path.join(__dirname, '0001', 'public', 'index.html'));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    fs.readFile(path.join(__dirname, '0001', 'data.json'), 'utf8', (err, data) => {
+    fs.readFile(path.join(__dirname, 'data.json'), 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return;
@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('save', (content) => {
-        fs.writeFile(path.join(__dirname, '0001', 'data.json'), content, (err) => {
+        fs.writeFile(path.join(__dirname, 'data.json'), content, (err) => {
             if (err) {
                 console.error(err);
                 return;
