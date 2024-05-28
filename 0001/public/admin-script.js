@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io('http://admi.mimenu.pe:3001');
+    const socket = io('http://localhost:3001');
 
     const quill = new Quill('#editor-container', {
         theme: 'snow',
