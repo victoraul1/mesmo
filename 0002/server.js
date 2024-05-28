@@ -9,19 +9,21 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+const dirPath = path.join(__dirname, 'public');
+
 // Configuración de autenticación básica solo para /admin.html
 app.get('/admin.html', basicAuth({
-    users: { 'admin': 'password' }, // Reemplaza 'admin' y 'password' con el usuario y contraseña que prefieras
-    challenge: true
+    users: { 'admin': 'password' }, // Reemplaza 'admin' y 'password' con las credenciales que prefieras
+    challenge: true,
 }), (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+    res.sendFile(path.join(dirPath, 'admin.html'));
 });
 
 // Rutas para archivos estáticos y para index.html
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(dirPath));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(dirPath, 'index.html'));
 });
 
 io.on('connection', (socket) => {
@@ -50,7 +52,7 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3002, () => {
-    console.log('Listening on port 3002');
+const PORT = 3002;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
- 

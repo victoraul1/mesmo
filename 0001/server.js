@@ -21,6 +21,7 @@ app.get('/admin.html', basicAuth({
 
 // Rutas para archivos estáticos y para index.html
 app.use(express.static(dirPath));
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(dirPath, 'index.html'));
 });
