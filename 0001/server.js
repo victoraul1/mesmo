@@ -9,54 +9,47 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const dirPath = path.join(__dirname, 'public');
-
-// Autenticación básica para /admin.html
+// Configuración de autenticación básica solo para /admin.html
 app.get('/admin.html', basicAuth({
-  users: { 'admin': 'password' }, // Reemplaza 'admin' y 'password' con las credenciales que prefieras
-  challenge: true,
+    users: { 'admin': 'password' }, // Reemplaza 'admin' y 'password' con el usuario y contraseña que prefieras
+    challenge: true
 }), (req, res) => {
-  res.sendFile(path.join(dirPath, 'admin.html'));
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// Rutas para archivos estáticos
-app.use(express.static(dirPath));
+// Rutas para archivos estáticos y para index.html
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Enviar index.html como respuesta para todas las demás rutas
 app.get('/', (req, res) => {
-  res.sendFile(path.join(dirPath, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Manejo de conexiones socket.io
 io.on('connection', (socket) => {
-  console.log('New client connected');
+    console.log('New client connected');
 
-  // Leer el archivo data.json y enviarlo al cliente
-  fs.readFile(path.join(__dirname, 'data.json'), 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    socket.emit('load', data);
-  });
-
-  // Guardar los datos enviados por el cliente en data.json
-  socket.on('save', (content) => {
-    fs.writeFile(path.join(__dirname, 'data.json'), content, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      io.emit('update', content);
+    fs.readFile(path.join(__dirname, 'data.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        socket.emit('load', data);
     });
-  });
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
+    socket.on('save', (content) => {
+        fs.writeFile(path.join(__dirname, 'data.json'), content, (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            io.emit('update', content);
+        });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
 });
 
-const PORT = 3001;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(3001, () => {
+    console.log('Listening on port 3001');
 });
