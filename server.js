@@ -1,26 +1,57 @@
+
 const express = require('express');
 const app = express();
 const path = require('path');
 
-// Middleware to serve static files from dynamic paths
+// Middleware to determine the correct directory based on the subdomain
+app.use((req, res, next) => {
+    let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
+    req.restaurantId = subdomain === 'admi' ? 'admin' : 'carta';
+    next();
+});
+
+// Serve static files dynamically from the corresponding public directory
 app.use('/:id/public', (req, res, next) => {
-    express.static(path.join(__dirname, req.params.id, 'public'))(req, res, next);
+    let baseDir = path.join(__dirname, req.params.id, 'public');
+    express.static(baseDir)(req, res, next);
 });
 
-// Dynamic route for admin pages
-app.get('/:id/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, req.params.id, 'public', 'admin.html'));
-});
-
-// Dynamic route for main pages
-app.get('/:id/carta', (req, res) => {
-    res.sendFile(path.join(__dirname, req.params.id, 'public', 'index.html'));
+// Dynamic routing to serve admin.html or index.html based on the subdomain
+app.get('/:id/', (req, res) => {
+    let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
+    res.sendFile(path.join(__dirname, req.params.id, 'public', file));
 });
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+// const express = require('express');
+// const app = express();
+// const path = require('path');
+
+// // Middleware to serve static files from dynamic paths
+// app.use('/:id/public', (req, res, next) => {
+//     express.static(path.join(__dirname, req.params.id, 'public'))(req, res, next);
+// });
+
+// // Dynamic route for admin pages
+// app.get('/:id/admin', (req, res) => {
+//     res.sendFile(path.join(__dirname, req.params.id, 'public', 'admin.html'));
+// });
+
+// // Dynamic route for main pages
+// app.get('/:id/carta', (req, res) => {
+//     res.sendFile(path.join(__dirname, req.params.id, 'public', 'index.html'));
+// });
+
+// const PORT = process.env.PORT || 3001;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
 
 
 
