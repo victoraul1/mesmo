@@ -2,25 +2,25 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-// Serve static files from any 'public' subdirectory
-app.use('/public', express.static('public'));
-
-// Dynamic routing to handle restaurant IDs
-app.get('/:id/admin', (req, res) => {
-    const restaurantId = req.params.id;
-    res.sendFile(path.join(__dirname, restaurantId, 'public', 'admin.html'));
+// Middleware to serve static files from dynamic paths
+app.use('/:id/public', (req, res, next) => {
+    express.static(path.join(__dirname, req.params.id, 'public'))(req, res, next);
 });
 
+// Dynamic route for admin pages
+app.get('/:id/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, req.params.id, 'public', 'admin.html'));
+});
+
+// Dynamic route for main pages
 app.get('/:id/carta', (req, res) => {
-    const restaurantId = req.params.id;
-    res.sendFile(path.join(__dirname, restaurantId, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, req.params.id, 'public', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
 
 
 
