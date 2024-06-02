@@ -2,23 +2,25 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-app.use(express.static('public')); // General static file serving
+// Serve static files from any 'public' subdirectory
+app.use('/public', express.static('public'));
 
-app.get('/0001/admin', function(req, res) {
-    res.sendFile(path.join(__dirname, '0001/public/admin.html'));
+// Dynamic routing to handle restaurant IDs
+app.get('/:id/admin', (req, res) => {
+    const restaurantId = req.params.id;
+    res.sendFile(path.join(__dirname, restaurantId, 'public', 'admin.html'));
 });
 
-app.get('/0001/carta', function(req, res) {
-    res.sendFile(path.join(__dirname, '0001/public/index.html'));
+app.get('/:id/carta', (req, res) => {
+    const restaurantId = req.params.id;
+    res.sendFile(path.join(__dirname, restaurantId, 'public', 'index.html'));
 });
-
-// Repeat for 0002 and other directories if necessary
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
- 
+
 
 
 
