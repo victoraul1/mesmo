@@ -4,8 +4,8 @@
   "description": "Gestión de menús para restaurantes",
   "main": "server.js",
   "scripts": {
-    "start-0001": "node server.js",
-    "start-0002": "node server.js"
+    "start-0001": "node 0001/server.js",
+    "start-0002": "node 0002/server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
