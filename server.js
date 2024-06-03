@@ -25,6 +25,11 @@ app.get('/:id/', (req, res) => {
     res.sendFile(path.join(__dirname, req.params.id, 'public', file));
 });
 
+app.get('/socket.io/socket.io.js', (req, res) => {
+    res.sendFile(path.resolve('./node_modules/socket.io/client-dist/socket.io.js'));
+});
+
+
 io.on('connection', (socket) => {
     console.log('A user connected');
     socket.on('disconnect', () => {
