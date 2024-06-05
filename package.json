@@ -1,33 +1,32 @@
-{
-  "name": "mesmo",
-  "version": "1.0.0",
-  "description": "Gestión de menús para restaurantes",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.0.0",
-    "path": "^0.12.7"
-  }
-}
-
-
-
-
 // {
 //   "name": "mesmo",
 //   "version": "1.0.0",
 //   "description": "Gestión de menús para restaurantes",
 //   "main": "server.js",
 //   "scripts": {
-//     "start-0001": "node 0001/server.js",
-//     "start-0002": "node 0002/server.js"
+//     "start": "node server.js"
 //   },
 //   "dependencies": {
 //     "express": "^4.17.1",
-//     "socket.io": "^4.0.0"
+//     "socket.io": "^4.0.0",
+//     "path": "^0.12.7"
 //   }
 // }
+
+
+
+
+{
+  "name": "mesmo",
+  "version": "1.0.0",
+  "description": "Gestión de menús para restaurantes",
+  "main": "server.js",
+"scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.0"
+  }
+}
 
