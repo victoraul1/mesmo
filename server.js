@@ -16,20 +16,22 @@ app.use((req, res, next) => {
 
 // Serve static files dynamically from the corresponding public directory
 app.use('/:id/public', express.static((req, res, next) => {
-    return path.join(__dirname, req.params.id, 'public');
+    const baseDir = path.join(__dirname, req.params.id, 'public');
+    return baseDir;
 }));
 
 // Dynamic routing to serve admin.html or index.html based on the subdomain
 app.get('/:id/', (req, res) => {
-    let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
+    const file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
     res.sendFile(path.join(__dirname, req.params.id, 'public', file));
 });
 
+// Serving the socket.io client file
 app.get('/socket.io/socket.io.js', (req, res) => {
     res.sendFile(path.resolve('./node_modules/socket.io/client-dist/socket.io.js'));
 });
 
-
+// Socket.io connection handling
 io.on('connection', (socket) => {
     console.log('A user connected');
     socket.on('disconnect', () => {
@@ -41,3 +43,4 @@ const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
