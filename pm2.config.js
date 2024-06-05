@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'mesmo',
-      script: './server.js',
+      script: 'server.js',
       instances: 1,
       autorestart: true,
       watch: false,
