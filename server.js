@@ -9,14 +9,15 @@ const io = socketio(server);
 
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
-    let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    req.restaurantId = subdomain === 'admi' ? 'admin' : 'carta';
+    let subdomain = req.headers.host.split('.')[0]; // gets 'admin' or 'carta'
+    req.restaurantId = subdomain === 'admin' ? 'admin' : 'carta';
     next();
 });
 
 // Serve static files dynamically from the corresponding public directory
 app.use('/:id/public', express.static((req, res, next) => {
     let baseDir = path.join(__dirname, req.params.id, 'public');
+    console.log('Base directory for static files:', baseDir); // Debugging output
     return baseDir;
 }));
 
@@ -34,14 +35,9 @@ app.get('/socket.io/socket.io.js', (req, res) => {
 // Connection events for WebSocket
 io.on('connection', (socket) => {
     console.log('A user connected');
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
+    socket.on('disconnect', () => console.log('User disconnected'));
 });
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
