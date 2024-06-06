@@ -10,20 +10,31 @@ const io = socketio(server);
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
     let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    req.restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
+    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
+    req.restaurantId = restaurantId;
     next();
 });
 
-// Serve static files dynamically from the corresponding public directory
-app.use('/:id/public', express.static((req, res, next) => {
-    return path.join(__dirname, req.params.id, 'public');
-}));
+
+app.use('/:id/public', (req, res, next) => {
+  const baseDir = path.join(__dirname, req.params.id, 'public');
+  express.static(baseDir)(req, res, next);
+});
+
 
 // Dynamic routing to serve admin.html or index.html based on the subdomain
 app.get('/:id/', (req, res) => {
     let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
-    res.sendFile(path.join(__dirname, req.params.id, 'public', file));
+    let filePath = path.join(__dirname, req.params.id, 'public', file);
+    console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
+    res.sendFile(filePath);
 });
+
+
+
+
+
+
 
 // Path for socket.io client script
 app.get('/socket.io/socket.io.js', (req, res) => {
