@@ -9,8 +9,9 @@ const io = socketio(server);
 
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
-    let subdomain = req.headers.host.split('.')[0]; // gets 'admin' or 'carta'
-    req.restaurantId = subdomain === 'admin' ? 'admin' : 'carta';
+    let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
+    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
+    req.restaurantId = restaurantId;
     next();
 });
 
@@ -35,9 +36,12 @@ app.get('/socket.io/socket.io.js', (req, res) => {
 // Connection events for WebSocket
 io.on('connection', (socket) => {
     console.log('A user connected');
-    socket.on('disconnect', () => console.log('User disconnected'));
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
 });
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
