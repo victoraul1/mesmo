@@ -7,49 +7,39 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// Middleware to determine the correct directory based on the subdomain
+// Middleware to determine the correct directory and file based on the subdomain and URL path
 app.use((req, res, next) => {
-    let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
-    req.restaurantId = restaurantId;
-    next();
+  const host = req.headers.host;
+  let subdomain = host.split('.')[0]; // This assumes your subdomain is the first part of the host, like 'admin' or 'carta'
+  const directory = req.path.split('/')[1]; // This gets the directory like '0001' or '0002'
+  let filename = (subdomain === 'admin') ? 'admin.html' : 'index.html'; // Determine the file to serve based on subdomain
+
+  req.servePath = path.join(__dirname, directory, 'public', filename);
+  next();
 });
 
-
-app.use('/:id/public', (req, res, next) => {
-  const baseDir = path.join(__dirname, req.params.id, 'public');
-  express.static(baseDir)(req, res, next);
+// Serve static files dynamically from the corresponding public directory
+app.use((req, res, next) => {
+  express.static(path.join(__dirname, req.params.id, 'public'))(req, res, next);
 });
 
-
-// Dynamic routing to serve admin.html or index.html based on the subdomain
-app.get('/:id/', (req, res) => {
-    let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
-    let filePath = path.join(__dirname, req.params.id, 'public', file);
-    console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
-    res.sendFile(filePath);
+// Serve the appropriate HTML file based on subdomain and directory
+app.get('/:id/*', (req, res) => {
+  res.sendFile(req.servePath);
 });
-
-
-
-
-
-
 
 // Path for socket.io client script
 app.get('/socket.io/socket.io.js', (req, res) => {
-    res.sendFile(path.resolve('./node_modules/socket.io/client-dist/socket.io.js'));
+  res.sendFile(path.resolve('./node_modules/socket.io/client-dist/socket.io.js'));
 });
 
 // Connection events for WebSocket
 io.on('connection', (socket) => {
-    console.log('A user connected');
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
+  console.log('A user connected');
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
 });
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
