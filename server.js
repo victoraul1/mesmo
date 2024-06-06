@@ -15,12 +15,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve static files dynamically from the corresponding public directory
-// app.use('/:id/public', express.static((req, res, next) => {
-//     let baseDir = path.join(__dirname, req.params.id, 'public');
-//     console.log('Base directory for static files:', baseDir); // Debugging output
-//     return baseDir;
-// }));
 
 app.use('/:id/public', (req, res, next) => {
   const baseDir = path.join(__dirname, req.params.id, 'public');
