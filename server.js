@@ -7,25 +7,33 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// Middleware to determine the correct directory and file based on the subdomain and URL path
+// Middleware to ensure the base path is correctly set
 app.use((req, res, next) => {
   const host = req.headers.host;
-  let subdomain = host.split('.')[0]; // This assumes your subdomain is the first part of the host, like 'admin' or 'carta'
-  const directory = req.path.split('/')[1]; // This gets the directory like '0001' or '0002'
-  let filename = (subdomain === 'admin') ? 'admin.html' : 'index.html'; // Determine the file to serve based on subdomain
+  let subdomain = host.split('.')[0]; // Extract subdomain like 'admin' or 'carta'
+  let directory = req.url.split('/')[1]; // Extract the directory number like '0001'
+  let filename = (subdomain === 'admin') ? 'admin.html' : 'index.html'; // Choose file based on subdomain
+  
+  if (!directory || !filename) {
+    return res.status(400).send("Bad Request: Missing URL components");
+  }
 
-  req.servePath = path.join(__dirname, directory, 'public', filename);
+  let filePath = path.join(__dirname, directory, 'public', filename);
+  
+  if (!filePath) {
+    return res.status(404).send("File path resolution error");
+  }
+  
+  req.filePath = filePath;
   next();
 });
 
-// Serve static files dynamically from the corresponding public directory
-app.use((req, res, next) => {
-  express.static(path.join(__dirname, req.params.id, 'public'))(req, res, next);
-});
+// Serve static files from the public directories
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve the appropriate HTML file based on subdomain and directory
 app.get('/:id/*', (req, res) => {
-  res.sendFile(req.servePath);
+  res.sendFile(req.filePath);
 });
 
 // Path for socket.io client script
