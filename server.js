@@ -7,34 +7,26 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// Log all incoming requests
-app.use((req, res, next) => {
-    console.log('New request:', req.method, req.url, 'Host:', req.headers.host);
-    next();
-});
-
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
     let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    console.log('Received request for subdomain:', subdomain);
-
+    let restaurantId;
     if (subdomain === 'admi') {
-        req.restaurantId = 'admin';
+        restaurantId = 'admin';
     } else if (subdomain === 'carta') {
-        req.restaurantId = 'carta';
+        restaurantId = 'carta';
     } else {
-        console.log('Subdomain not recognized:', subdomain);
-        return res.status(404).send('Subdomain not recognized');
+        // Handle unknown subdomain
+        return res.status(404).send('Subdomain not recognized'); // Or redirect, etc.
     }
-
-    console.log('Routing to restaurantId:', req.restaurantId);
+    req.restaurantId = restaurantId;
+    console.log('Subdomain:', subdomain, 'Restaurant ID:', req.restaurantId);
     next();
 });
 
 // Serve static files dynamically from the corresponding public directory
 app.use('/:id/public', (req, res, next) => {
     const baseDir = path.join(__dirname, req.params.id, 'public');
-    console.log('Static files served from:', baseDir);
     express.static(baseDir)(req, res, next);
 });
 
@@ -42,7 +34,8 @@ app.use('/:id/public', (req, res, next) => {
 app.get('/:id/', (req, res) => {
     let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
     let filePath = path.join(__dirname, req.params.id, 'public', file);
-    console.log('Attempting to serve file:', filePath); // Logging the path to check it's correct
+    console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
+
     res.sendFile(filePath);
 });
 
@@ -59,7 +52,8 @@ io.on('connection', (socket) => {
     });
 });
 
-// Set the port and start the server
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-    console.log('Server is running on port ' +
+    console.log('Server is running on port ' + PORT);
+});
+ 
