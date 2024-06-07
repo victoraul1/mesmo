@@ -10,16 +10,7 @@ const io = socketio(server);
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
     let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    // Explicitly handle known subdomains
-    let restaurantId;
-    if (subdomain === 'admi') {
-        restaurantId = 'admin';
-    } else if (subdomain === 'carta') {
-        restaurantId = 'carta';
-    } else {
-        // Handle unknown subdomain
-        return res.status(404).send('Subdomain not recognized'); // Or redirect, etc.
-    }
+    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
     req.restaurantId = restaurantId;
     next();
 });
