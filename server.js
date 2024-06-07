@@ -10,17 +10,24 @@ const io = socketio(server);
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
     let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
+    let restaurantId;
+    if (subdomain === 'admi') {
+        restaurantId = 'admin';
+    } else if (subdomain === 'carta') {
+        restaurantId = 'carta';
+    } else {
+        // Handle unknown subdomain
+        return res.status(404).send('Subdomain not recognized'); // Or redirect, etc.
+    }
     req.restaurantId = restaurantId;
     next();
 });
 
-
+// Serve static files dynamically from the corresponding public directory
 app.use('/:id/public', (req, res, next) => {
-  const baseDir = path.join(__dirname, req.params.id, 'public');
-  express.static(baseDir)(req, res, next);
+    const baseDir = path.join(__dirname, req.params.id, 'public');
+    express.static(baseDir)(req, res, next);
 });
-
 
 // Dynamic routing to serve admin.html or index.html based on the subdomain
 app.get('/:id/', (req, res) => {
@@ -29,12 +36,6 @@ app.get('/:id/', (req, res) => {
     console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
     res.sendFile(filePath);
 });
-
-
-
-
-
-
 
 // Path for socket.io client script
 app.get('/socket.io/socket.io.js', (req, res) => {
@@ -51,5 +52,5 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log('Server is running on port ' + PORT);
 });
