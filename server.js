@@ -10,7 +10,16 @@ const io = socketio(server);
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
     let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta'; // maps 'admi' to 'admin', 'carta' to 'carta'
+    // Explicitly handle known subdomains
+    let restaurantId;
+    if (subdomain === 'admi') {
+        restaurantId = 'admin';
+    } else if (subdomain === 'carta') {
+        restaurantId = 'carta';
+    } else {
+        // Handle unknown subdomain
+        return res.status(404).send('Subdomain not recognized'); // Or redirect, etc.
+    }
     req.restaurantId = restaurantId;
     next();
 });
@@ -24,7 +33,7 @@ app.use('/:id/public', (req, res, next) => {
 
 // Dynamic routing to serve admin.html or index.html based on the subdomain
 app.get('/:id/', (req, res) => {
-    let file = req.restaurantId === 'admin' ? 'index.html' : 'index.html';
+    let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
     let filePath = path.join(__dirname, req.params.id, 'public', file);
     console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
     res.sendFile(filePath);
