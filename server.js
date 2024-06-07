@@ -7,8 +7,17 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+
+// Log all incoming requests
+app.use((req, res, next) => {
+    console.log('New request:', req.method, req.url, 'Host:', req.headers.host);
+    next();
+});
+
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
+
+
     let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
     let restaurantId;
     if (subdomain === 'admi') {
