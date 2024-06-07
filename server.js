@@ -20,6 +20,7 @@ app.use((req, res, next) => {
         return res.status(404).send('Subdomain not recognized'); // Or redirect, etc.
     }
     req.restaurantId = restaurantId;
+    console.log('Subdomain:', subdomain, 'Restaurant ID:', req.restaurantId);
     next();
 });
 
@@ -31,9 +32,10 @@ app.use('/:id/public', (req, res, next) => {
 
 // Dynamic routing to serve admin.html or index.html based on the subdomain
 app.get('/:id/', (req, res) => {
-    let file = req.restaurantId === 'admin' ? 'index.html' : 'index.html';
+    let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
     let filePath = path.join(__dirname, req.params.id, 'public', file);
     console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
+
     res.sendFile(filePath);
 });
 
