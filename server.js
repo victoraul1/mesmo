@@ -7,35 +7,27 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-
-// Log all incoming requests
+// Detailed logging middleware
 app.use((req, res, next) => {
-    console.log('New request:', req.method, req.url, 'Host:', req.headers.host);
+    console.log('Received request:', req.method, req.url);
+    console.log('Headers:', req.headers);
     next();
 });
 
 // Middleware to determine the correct directory based on the subdomain
 app.use((req, res, next) => {
-
-
-    let subdomain = req.headers.host.split('.')[0]; // gets 'admi' or 'carta'
-    let restaurantId;
-    if (subdomain === 'admi') {
-        restaurantId = 'admin';
-    } else if (subdomain === 'carta') {
-        restaurantId = 'carta';
-    } else {
-        // Handle unknown subdomain
-        return res.status(404).send('Subdomain not recognized'); // Or redirect, etc.
-    }
+    let subdomain = req.headers.host.split('.')[0];
+    console.log('Subdomain extracted:', subdomain);
+    let restaurantId = subdomain === 'admi' ? 'admin' : 'carta';
     req.restaurantId = restaurantId;
-    console.log('Subdomain:', subdomain, 'Restaurant ID:', req.restaurantId);
+    console.log('Mapped subdomain to restaurant ID:', restaurantId);
     next();
 });
 
 // Serve static files dynamically from the corresponding public directory
 app.use('/:id/public', (req, res, next) => {
     const baseDir = path.join(__dirname, req.params.id, 'public');
+    console.log('Serving static files from:', baseDir);
     express.static(baseDir)(req, res, next);
 });
 
@@ -43,14 +35,19 @@ app.use('/:id/public', (req, res, next) => {
 app.get('/:id/', (req, res) => {
     let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
     let filePath = path.join(__dirname, req.params.id, 'public', file);
-    console.log('Serving HTML file:', filePath); // Logging the path to check it's correct
-
-    res.sendFile(filePath);
+    console.log('Serving HTML file:', filePath);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('Error sending file:', err);
+            res.status(500).send('Error serving file!');
+        }
+    });
 });
 
-// Path for socket.io client script
-app.get('/socket.io/socket.io.js', (req, res) => {
-    res.sendFile(path.resolve('./node_modules/socket.io/client-dist/socket.io.js'));
+// Error handling for non-existent routes
+app.use((req, res, next) => {
+    console.log('No route found for:', req.url);
+    res.status(404).send('Page not found');
 });
 
 // Connection events for WebSocket
@@ -61,8 +58,8 @@ io.on('connection', (socket) => {
     });
 });
 
+// Start the server
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-    console.log('Server is running on port ' + PORT);
+    console.log(`Server is running on port ${PORT}`);
 });
- 
