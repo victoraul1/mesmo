@@ -2,15 +2,17 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
-const fs = require('fs'); // Required to read and write files
+const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+app.use(express.json()); // Support for JSON-encoded bodies
+
 // Middleware for detailed logging
 app.use((req, res, next) => {
-    console.log('Received request:', req.method, req.url);
+    console.log(`Received request: ${req.method} ${req.url}`);
     console.log('Headers:', req.headers);
     next();
 });
@@ -49,22 +51,14 @@ app.get('/:id/data.json', (req, res) => {
 
 app.post('/:id/data.json', (req, res) => {
     const dataPath = path.join(__dirname, req.params.id, 'public', 'data.json');
-    let content = '';
-
-    req.on('data', (chunk) => {
-        content += chunk;
-    });
-
-    req.on('end', () => {
-        fs.writeFile(dataPath, content, (err) => {
-            if (err) {
-                console.error('Failed to save data:', err);
-                res.status(500).send('Failed to save data');
-                return;
-            }
-            res.status(200).send('Data saved successfully');
-            console.log('Data saved:', dataPath);
-        });
+    fs.writeFile(dataPath, JSON.stringify(req.body), (err) => {
+        if (err) {
+            console.error('Failed to save data:', err);
+            res.status(500).send('Failed to save data');
+            return;
+        }
+        res.status(200).send('Data saved successfully');
+        console.log('Data saved:', dataPath);
     });
 });
 
