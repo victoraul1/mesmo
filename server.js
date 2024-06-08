@@ -12,7 +12,7 @@ app.use(express.json()); // Support for JSON-encoded bodies
 
 // Middleware for detailed logging
 app.use((req, res, next) => {
-    console.log(`Received request: ${req.method} ${req.url}`);
+    console.log(`Receivedoo request: ${req.method} ${req.url}`);
     console.log('Headers:', req.headers);
     next();
 });
