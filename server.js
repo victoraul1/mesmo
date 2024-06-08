@@ -1,3 +1,4 @@
+
 const express = require('express');
 const http = require('http');
 const path = require('path');
@@ -12,7 +13,7 @@ app.use(express.json()); // Support for JSON-encoded bodies
 
 // Middleware for detailed logging
 app.use((req, res, next) => {
-    console.log(`Receivedoo request: ${req.method} ${req.url}`);
+    console.log(`Received request: ${req.method} ${req.url}`);
     console.log('Headers:', req.headers);
     next();
 });
