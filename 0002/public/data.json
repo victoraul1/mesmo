@@ -1,4 +1,3 @@
-
 {
   "DESAYUNOS": [
     {"item": "Tamal (pollo)", "price": "S/.7.50"},
@@ -33,8 +32,7 @@
     {"item": "Batido de fresa con leche", "price": "S/.9.50"},
     {"item": "Batido de durazno con leche", "price": "S/.10.50"},
     {"item": "Batido de plátano con leche", "price": "S/.9.50"}
-  ],
-
+  ]
 }
 
 
