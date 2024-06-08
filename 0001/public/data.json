@@ -1,40 +1,16 @@
-
 {
   "DESAYUNOS": [
-    {"item": "Tamal (pollo)", "price": "S/.7.50"},
-    {"item": "Humitas", "price": "S/.8.00"},
-    {"item": "Papa Rellena", "price": "S/.8.00"}
+    {"item": "Tamal (pollo)", "price": "S/.7.50"}
   ],
   "SÁNDWICHES": [
-    {"item": "Pan con jamón", "price": "S/.14.50"},
-    {"item": "Pan con pavo", "price": "S/.13.50"},
-    {"item": "Pan con chicharrón", "price": "S/.15.00"},
-    {"item": "Pan con pollo", "price": "S/.11.50"},
-    {"item": "Pan con pollo y queso", "price": "S/.13.00"},
-    {"item": "Pan con queso", "price": "S/.6.50"}
+    {"item": "Pan con jamón", "price": "S/.14.50"}
   ],
   "ESPECIALIDAD DE LA CASA": [
-    {"item": "Frito (2 chuletas de cerdo)", "price": "S/.27.50"},
-    {"item": "1/2 frito (1 chuleta de cerdo)", "price": "S/.19.00"},
-    {"item": "Chicharrón (5 unidades de costilla)", "price": "S/.27.00"},
-    {"item": "Plato mixto (1 chuleta, 3 unidades de chicharrón)", "price": "S/.28.00"},
-    {"item": "Lomo al jugo con café pasado", "price": "S/.40.00"},
-    {"item": "Pavo al plato", "price": "S/.28.00"}
+    {"item": "Frito (2 chuletas de cerdo)", "price": "S/.27.50"}
   ],
   "JUGOS NATURALES": [
-    {"item": "Combinado especial", "price": "S/.9.00"},
-    {"item": "Jugo de mango", "price": "S/.9.00"},
-    {"item": "Jugo de papaya", "price": "S/.8.50"},
-    {"item": "Jugo de piña", "price": "S/.7.50"},
-    {"item": "Jugo de durazno", "price": "S/.12.00"},
-    {"item": "Jugo de maracuyá", "price": "S/.7.50"},
-    {"item": "Jugo de naranja", "price": "S/.7.50"},
-    {"item": "Jugo de fresa", "price": "S/.9.00"},
-    {"item": "Batido de fresa con leche", "price": "S/.9.50"},
-    {"item": "Batido de durazno con leche", "price": "S/.10.50"},
-    {"item": "Batido de plátano con leche", "price": "S/.9.50"}
-  ],
-
+    {"item": "Jugo de mango", "price": "S/.9.00"}
+  ]
 }
 
 
