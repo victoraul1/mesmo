@@ -1,13 +1,30 @@
-
 const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
 const fs = require('fs');
+const basicAuth = require('express-basic-auth');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+
+// Define user credentials for basic authentication
+const userAuth = {
+    '0001': { username: 'user1', password: 'pass1' },
+    '0002': { username: 'user2', password: 'pass2' }
+};
+
+// Helper function to generate authentication middleware
+const generateAuth = (id) => {
+    const users = {};
+    users[userAuth[id].username] = userAuth[id].password;
+    return basicAuth({
+        users: users,
+        challenge: true, // This will cause most browsers to show a login dialog
+        realm: 'Admin'
+    });
+};
 
 app.use(express.json()); // Support for JSON-encoded bodies
 
@@ -36,10 +53,18 @@ app.use('/:id/public', (req, res, next) => {
 });
 
 // Dynamic routing to serve admin.html or index.html based on the subdomain
-app.get('/:id/', (req, res) => {
+// Adding authentication only for admin.html
+app.get('/:id/', (req, res, next) => {
     let file = req.restaurantId === 'admin' ? 'admin.html' : 'index.html';
     let filePath = path.join(__dirname, req.params.id, 'public', file);
-    res.sendFile(filePath);
+
+    if (file === 'admin.html') {
+        const authMiddleware = generateAuth(req.params.id);
+        authMiddleware(req, res, () => res.sendFile(filePath));
+    } else {
+        res.sendFile(filePath);
+    }
+
     console.log('Serving HTML file:', filePath);
 });
 
