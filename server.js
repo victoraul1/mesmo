@@ -21,7 +21,7 @@ const generateAuth = (id) => {
     users[userAuth[id].username] = userAuth[id].password;
     return basicAuth({
         users: users,
-        challenge: true, // This will cause most browsers to show a login dialog
+        challenge: true,
         realm: 'Admin'
     });
 };
@@ -68,15 +68,15 @@ app.get('/:id/', (req, res, next) => {
     console.log('Serving HTML file:', filePath);
 });
 
-// Route to handle the GET and POST request for data.json for each restaurant
+// Update the path to handle the GET and POST requests for data.json
 app.get('/:id/data.json', (req, res) => {
-    const dataPath = path.join(__dirname, req.params.id, 'public', 'data.json');
+    const dataPath = path.join('/var/www/mesmo_data', req.params.id, 'data.json');
     res.sendFile(dataPath);
     console.log('Serving data file:', dataPath);
 });
 
 app.post('/:id/data.json', (req, res) => {
-    const dataPath = path.join(__dirname, req.params.id, 'public', 'data.json');
+    const dataPath = path.join('/var/www/mesmo_data', req.params.id, 'data.json');
     fs.writeFile(dataPath, JSON.stringify(req.body), (err) => {
         if (err) {
             console.error('Failed to save data:', err);
@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
 
     // Emitting and receiving updates for data.json
     socket.on('request-data', (id) => {
-        const dataPath = path.join(__dirname, id, 'public', 'data.json');
+        const dataPath = path.join('/var/www/mesmo_data', id, 'data.json');
         fs.readFile(dataPath, 'utf8', (err, data) => {
             if (err) {
                 socket.emit('data-error', 'Failed to load data');
@@ -109,7 +109,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('save-data', (id, data) => {
-        const dataPath = path.join(__dirname, id, 'public', 'data.json');
+        const dataPath = path.join('/var/www/mesmo_data', id, 'data.json');
         fs.writeFile(dataPath, JSON.stringify(data), (err) => {
             if (err) {
                 socket.emit('data-error', 'Failed to save data');
