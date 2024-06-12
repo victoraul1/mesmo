@@ -12,7 +12,9 @@ const io = socketio(server);
 // Define user credentials for basic authentication
 const userAuth = {
     '0001': { username: 'user1', password: 'pass1' },
-    '0002': { username: 'user2', password: 'pass2' }
+    '0002': { username: 'user2', password: 'pass2' },
+    '0003': { username: 'user3', password: 'pass3' },
+    '0004': { username: 'user4', password: 'pass4' }
 };
 
 // Helper function to generate authentication middleware
