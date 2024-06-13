@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
         modules: {
             toolbar: [
                 [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['link', 'image'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['clean']
+                ['bold', 'italic', 'underline']
+                // ['link', 'image'],
+                // [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                // ['clean']
             ]
         },
-        formats: ['bold', 'italic', 'underline', 'link', 'image', 'list', 'header']
+        formats: ['bold', 'italic', 'underline']
     });
 
     // Request initial data load when the connection is established
