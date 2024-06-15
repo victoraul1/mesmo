@@ -14,8 +14,25 @@ const userAuth = {
     '0001': { username: 'user1', password: 'pass1' },
     '0002': { username: 'user2', password: 'pass2' },
     '0003': { username: 'user3', password: 'pass3' },
-    '0004': { username: 'user4', password: 'pass4' }
+    '0004': { username: 'user4', password: 'pass4' },
+    '0005': { username: 'user5', password: 'pass5' },
+    '0006': { username: 'user6', password: 'pass6' },
+    '0007': { username: 'user7', password: 'pass7' },
+    '0008': { username: 'user8', password: 'pass8' },
+    '0009': { username: 'user9', password: 'pass9' },
+    '0010': { username: 'user10', password: 'pass10' },
+    '0011': { username: 'user11', password: 'pass11' },
+    '0012': { username: 'user12', password: 'pass12' },
+    '0013': { username: 'user13', password: 'pass13' },
+    '0014': { username: 'user14', password: 'pass14' },
+    '0015': { username: 'user15', password: 'pass15' },
+    '0016': { username: 'user16', password: 'pass16' },
+    '0017': { username: 'user17', password: 'pass17' },
+    '0018': { username: 'user18', password: 'pass18' },
+    '0019': { username: 'user19', password: 'pass19' },
+    '0020': { username: 'user20', password: 'pass20' }
 };
+
 
 // Helper function to generate authentication middleware
 const generateAuth = (id) => {
