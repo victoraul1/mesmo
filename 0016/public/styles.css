@@ -114,6 +114,7 @@ h1 {
 
     #editor-container {
         height: 450px;
+        padding:0px 20px 0px 20px;
     }
 
     .header {
