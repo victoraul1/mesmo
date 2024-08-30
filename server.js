@@ -13,7 +13,7 @@ const io = socketio(server);
 const userAuth = {
     '0001': { username: 'user1', password: 'pass1' },
     '0002': { username: 'user2', password: 'pass2' },
-    '0003': { username: 'user3', password: 'pass3' },
+    '0003': { username: 'user3', password: '3quena' },
     '0004': { username: 'user4', password: 'pass4' },
     '0005': { username: 'user5', password: 'pass5' },
     '0006': { username: 'user6', password: 'pass6' },
